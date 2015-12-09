@@ -24,9 +24,14 @@ namespace OnlineParty
 		{
 			update_radius();
 		}
-		else
+		else if(mouse.pushing(si3::Mouse::left) ||
+				mouse.pushing(si3::Mouse::right))
 		{
 			update_radian();
+		}
+		else
+		{
+
 		}
 		update_pos();
 		look_at_center();
