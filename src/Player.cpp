@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "God.h"
 
 namespace OnlineParty
 {
@@ -14,34 +15,66 @@ namespace OnlineParty
 		radius = default_radius;
 		model.y(0.0f);
 		update_pos();
+		state = MyState::standingby;
+		should_update = true;
 	}
 
 	void Player::update()
 	{
-		auto & mouse = si3::Manager::mouse();
-		if (mouse.pushing(si3::Mouse::left) &&
-			mouse.pushing(si3::Mouse::right))
+		if (should_update == false)
 		{
-			update_radius();
+			should_update = true;
+			return;
 		}
-		else if(mouse.pushing(si3::Mouse::left) ||
-				mouse.pushing(si3::Mouse::right))
-		{
-			update_radian();
-		}
-		else
-		{
 
-		}
-		update_pos();
-		look_at_center();
-		si3::Manager::register_display_object(model);
+		update(God::get_elapsed_sec());
 	}
 
 	si3::Coor3 Player::get_pos() const
 	{
 		return si3::Coor3(model.x(), model.y(), model.z());
 	}
+
+
+	void Player::on_standby()
+	{
+		state = MyState::standingby;
+	}
+	void Player::on_attack()
+	{
+		state = MyState::attacking;
+	}
+	void Player::on_slide_right()
+	{
+		state = MyState::sliding_right;
+	}
+	void Player::on_slide_left()
+	{
+		state = MyState::sliding_left;
+	}
+
+	/**
+	 sync_dataフォーマット
+	 float: delta_sec
+	 int32: state値
+	 float: radius
+	 float: radian
+	 float: y
+	 */
+	void Player::evaluate(fw::Bindata & sync_data)
+	{
+		float delta_sec;
+		sync_data >> delta_sec;
+		__int32 state;
+		sync_data >> state;
+		this->state = static_cast<MyState::State>(state);
+		float y;
+		sync_data >> radius >> radian >> y;
+		model.y(y);
+		update(delta_sec);
+		should_update = false;
+	}
+
 
 
 	void Player::update_radius()
@@ -86,4 +119,54 @@ namespace OnlineParty
 		const float radian = anti_radian + si3::pi + si3::pi*0.5f;
 		model.radian_y(radian);
 	}
+
+	void Player::update(const float delta_sec)
+	{
+		if (state == MyState::standingby)
+		{
+			standby(delta_sec);
+		}
+		else if (state == MyState::attacking)
+		{
+			attack(delta_sec);
+		}
+		else if (state == MyState::sliding_right)
+		{
+			slide_right(delta_sec);
+		}
+		else if (state == MyState::sliding_left)
+		{
+			slide_left(delta_sec);
+		}
+
+		look_at_center();
+		si3::Manager::register_display_object(model);
+	}
+
+
+	void Player::standby(const float delta_sec)
+	{
+		if (radius < default_radius)
+		{
+			// todo come back
+		}
+		//todo
+	}
+
+	void Player::attack(const float delta_sec)
+	{
+		//todo
+	}
+
+	void Player::slide_right(const float delta_sec)
+	{
+		//todo
+	}
+
+	void Player::slide_left(const float delta_sec)
+	{
+		//todo
+	}
+
+
 }
