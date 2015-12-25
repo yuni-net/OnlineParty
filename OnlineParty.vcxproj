@@ -18,8 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Cameraman.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\God.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Cameraman.h" />
+    <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\God.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Timer.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B1F11F91-E5B2-46DF-8E41-2AD304BC1F23}</ProjectGuid>
+    <ProjectGuid>{5A5A96AF-C7C4-4FCA-A384-94C4ED66B25E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OnlineParty</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
@@ -71,16 +86,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\yuni\projects\cpp\Fantomwaves\FantomWaves;C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\yuni\projects\cpp\Fantomwaves\FantomWaves;C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Users\yuni\projects\cpp\FantomWaves\FantomWaves;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Users\yuni\projects\cpp\FantomWaves\FantomWaves;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\yuni\projects\cpp\Fantomwaves\FantomWaves;C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\yuni\projects\cpp\Fantomwaves\FantomWaves;C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Users\yuni\projects\cpp\FantomWaves\FantomWaves;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\yuni\projects\cpp\simplect3D\simplect3D;C:\Users\yuni\projects\cpp\FantomWaves\FantomWaves;C:\Program Files %28x86%29\Microsoft DirectX SDK %28August 2009%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -151,21 +166,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Cameraman.cpp" />
-    <ClCompile Include="src\Enemy.cpp" />
-    <ClCompile Include="src\God.cpp" />
-    <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\Timer.cpp" />
-    <ClCompile Include="WinMain.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Cameraman.h" />
-    <ClInclude Include="src\Enemy.h" />
-    <ClInclude Include="src\God.h" />
-    <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\Timer.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
