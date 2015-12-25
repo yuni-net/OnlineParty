@@ -1,69 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="God">
-      <UniqueIdentifier>{64db27db-ff82-4776-8ac9-217f0ee17618}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{f81e65ea-23cf-4963-b445-7e85e9a7758c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{89f9fffc-3b7c-4ace-9632-8e4379ead128}</UniqueIdentifier>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{4dc3bea2-fe26-43a9-82af-5d51ad2efacf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Cameraman">
-      <UniqueIdentifier>{3bbe833d-f925-41b3-8f7b-841076b2fa4d}</UniqueIdentifier>
+      <UniqueIdentifier>{d0bfd800-a38e-467b-9f6c-a845f2d6f040}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Timer">
-      <UniqueIdentifier>{6c6d3500-eeb7-4fce-b830-d550ca20129f}</UniqueIdentifier>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{f9ab517d-57ba-44ef-9cce-53088436fca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="God">
+      <UniqueIdentifier>{f1b40728-4c5a-45d2-bf56-c13b069716c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{beb88f38-07f6-402e-aa51-e1f6021a0cd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinMain.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\God.cpp">
-      <Filter>God</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Enemy.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Player.cpp">
-      <Filter>Player</Filter>
+    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>Timer</Filter>
     </ClCompile>
     <ClCompile Include="src\Cameraman.cpp">
       <Filter>Cameraman</Filter>
     </ClCompile>
-    <ClCompile Include="src\Timer.cpp">
-      <Filter>Timer</Filter>
+    <ClCompile Include="src\Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\God.cpp">
+      <Filter>God</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\God.h">
-      <Filter>God</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Enemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Player.h">
-      <Filter>Player</Filter>
+    <ClInclude Include="src\Timer.h">
+      <Filter>Timer</Filter>
     </ClInclude>
     <ClInclude Include="src\Cameraman.h">
       <Filter>Cameraman</Filter>
     </ClInclude>
-    <ClInclude Include="src\Timer.h">
-      <Filter>Timer</Filter>
+    <ClInclude Include="src\Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\God.h">
+      <Filter>God</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
