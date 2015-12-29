@@ -1,26 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Timer">
-      <UniqueIdentifier>{4dc3bea2-fe26-43a9-82af-5d51ad2efacf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Cameraman">
-      <UniqueIdentifier>{d0bfd800-a38e-467b-9f6c-a845f2d6f040}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{f9ab517d-57ba-44ef-9cce-53088436fca4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="God">
-      <UniqueIdentifier>{f1b40728-4c5a-45d2-bf56-c13b069716c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{beb88f38-07f6-402e-aa51-e1f6021a0cd7}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="WinMain.cpp" />
-    <ClCompile Include="src\Timer.cpp">
-      <Filter>Timer</Filter>
+    <ClCompile Include="src\WinMain.cpp" />
+    <ClCompile Include="src\God.cpp">
+      <Filter>God</Filter>
     </ClCompile>
     <ClCompile Include="src\Cameraman.cpp">
       <Filter>Cameraman</Filter>
@@ -28,16 +11,33 @@
     <ClCompile Include="src\Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="src\God.cpp">
-      <Filter>God</Filter>
-    </ClCompile>
     <ClCompile Include="src\Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Timer.h">
-      <Filter>Timer</Filter>
+    <Filter Include="God">
+      <UniqueIdentifier>{889aeb66-8de7-43d3-9dd4-ef9226fd998a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cameraman">
+      <UniqueIdentifier>{2284cc4e-1fb3-4413-972e-badfeff88161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{aae38626-47bd-4b42-97bc-00643ce5d2d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{d675d54c-bc7e-4b45-b26a-3feffc076ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{c236aed2-d8e2-42c8-9450-75d840002b38}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\God.h">
+      <Filter>God</Filter>
     </ClInclude>
     <ClInclude Include="src\Cameraman.h">
       <Filter>Cameraman</Filter>
@@ -45,11 +45,11 @@
     <ClInclude Include="src\Enemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="src\God.h">
-      <Filter>God</Filter>
-    </ClInclude>
     <ClInclude Include="src\Player.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Timer.h">
+      <Filter>Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
