@@ -12,6 +12,12 @@ namespace OnlineParty
 		return get_instance().surver_surfer;
 	}
 
+	float God::get_elapsed_sec()
+	{
+		return get_instance().timer.get_elapsed_sec();
+	}
+
+
 
 
 	God & God::get_instance()
