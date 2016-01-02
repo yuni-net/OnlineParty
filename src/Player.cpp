@@ -65,7 +65,7 @@ namespace OnlineParty
 	{
 		float delta_sec;
 		sync_data >> delta_sec;
-		__int32 state;
+		int32_t state;
 		sync_data >> state;
 		this->state = static_cast<MyState::State>(state);
 		float y;
