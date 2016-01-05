@@ -17,6 +17,9 @@
     <ClCompile Include="src\Timer.cpp">
       <Filter>Timer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Synchronizer.cpp">
+      <Filter>Synchronizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
@@ -34,6 +37,9 @@
     <Filter Include="Timer">
       <UniqueIdentifier>{c236aed2-d8e2-42c8-9450-75d840002b38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Synchronizer">
+      <UniqueIdentifier>{8cbef0a2-89eb-47fd-81a5-37db2cb3ca59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\God.h">
@@ -50,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="src\Timer.h">
       <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Synchronizer.h">
+      <Filter>Synchronizer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
