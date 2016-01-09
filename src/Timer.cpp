@@ -6,14 +6,9 @@ namespace OnlineParty
 {
 	Timer::Timer()
 	{
-		std::unique_ptr<time_t> criteria_time(download_criteria_time());
 		SYSTEMTIME st;
 		GetSystemTime(&st);
-		double gap_sec = difftime(make_time_t(st), *criteria_time);
-		count = static_cast<unsigned long long>(gap_sec*1000);
-		// 年月日の差分しかカウントできていないから、それ以下の分もカウントする
-		count += st.wHour * 60 * 60 * 1000 + st.wMinute * 60 * 1000 + st.wSecond * 1000 + st.wMilliseconds;
-
+		count = time_to_ms(st);
 		last = std::chrono::system_clock::now();
 	}
 
@@ -42,49 +37,37 @@ namespace OnlineParty
 
 
 
-	std::unique_ptr<time_t> Timer::download_criteria_time()
+
+	unsigned long long Timer::time_to_ms(const SYSTEMTIME & systime) const
 	{
-		std::unique_ptr<time_t> criteria_time(new time_t());
-
-		tm time_data;
-		time_data.tm_year = 2015;
-		time_data.tm_mon = 10;
-		time_data.tm_mday = 21;
-		(*criteria_time) = mktime(&time_data);
-
-		// todo
-		/*
-		fw::P2P p2p;
-		fw::Bindata request;
-		request.add("{\"signature\": \"OnlineParty\", \"version\": 0, \"request\": [\"Give me the criteria time\"]}");
-		p2p.send(God::get_surver_surfer(), request);
-		if (p2p.are_there_any_left_datas() == false)
-		{
-			Sleep(1);
-		}
-		fw::NetSurfer surfer;
-		fw::Bindata reply;
-		p2p.pop_received_data(reply, surfer);
-		reply >> criteria_time->year;
-		reply >> criteria_time->month;
-		reply >> criteria_time->day;
-		reply >> criteria_time->hour;
-		reply >> criteria_time->minute;
-		reply >> criteria_time->second;
-		reply >> criteria_time->ms;
-		//*/
-		return criteria_time;
+		time_t daystime = make_time_t(systime);
+		time_t criteria = make_criteria_time_t();
+		double gap_days_as_sec = difftime(daystime, criteria);
+		unsigned long long gap_days_as_ms = static_cast<unsigned long long>(gap_days_as_sec) * 1000;
+		return gap_days_as_ms +
+			static_cast<unsigned long long>(systime.wHour) * 3600*1000 +
+			static_cast<unsigned long long>(systime.wMinute) * 60 * 1000 +
+			static_cast<unsigned long long>(systime.wSecond) * 1000 +
+			systime.wMilliseconds;
 	}
 
-
-	time_t Timer::make_time_t(const SYSTEMTIME & st)
+	time_t Timer::make_time_t(const SYSTEMTIME & st) const
 	{
 		tm time_data;
-		time_data.tm_year = st.wYear;
-		time_data.tm_mon = st.wMonth;
+		ZeroMemory(&time_data, sizeof(time_data));
+		time_data.tm_year = st.wYear-1900;
+		time_data.tm_mon = st.wMonth-1;
 		time_data.tm_mday = st.wDay;
 		return mktime(&time_data);
 	}
 
-
+	time_t Timer::make_criteria_time_t() const
+	{
+		tm time_data;
+		ZeroMemory(&time_data, sizeof(time_data));
+		time_data.tm_year = 2015 - 1900;
+		time_data.tm_mon = 10 - 1;
+		time_data.tm_mday = 1;
+		return mktime(&time_data);
+	}
 }
