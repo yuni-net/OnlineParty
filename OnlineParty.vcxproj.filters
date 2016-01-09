@@ -60,5 +60,6 @@
     <ClInclude Include="src\Synchronizer.h">
       <Filter>Synchronizer</Filter>
     </ClInclude>
+    <ClInclude Include="src\picojson.h" />
   </ItemGroup>
 </Project>
