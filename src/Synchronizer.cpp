@@ -5,6 +5,7 @@ namespace OnlineParty
 {
 	Synchronizer::Synchronizer()
 	{
+		members = nullptr;
 		state = State::waiting_reply_join;
 		load_config();
 		send_join_request();
@@ -27,6 +28,21 @@ namespace OnlineParty
 		}
 	}
 
+	const fw::NetSurfer & Synchronizer::get_server_surfer() const
+	{
+		return server_surfer;
+	}
+
+
+
+
+	Synchronizer::~Synchronizer()
+	{
+		if (members)
+		{
+			delete [] members;
+		}
+	}
 
 	/**
 	@brief I load the config to server_surfer.
@@ -50,6 +66,8 @@ namespace OnlineParty
 		picojson::object & root = value.get<picojson::object>();
 		const std::string & server_hostname = root["server_ip"].get<std::string>();
 		const unsigned short server_port = static_cast<unsigned short>(root["server_port"].get<double>());
+		const int max_member = static_cast<int>(root["max_member"].get<double>());
+		members = new MemberP2P[max_member];
 
 		fw::IP server_ip;
 		server_ip.set_by_hostname(server_hostname);

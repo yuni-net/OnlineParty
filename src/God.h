@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Cameraman.h"
 #include "Timer.h"
+#include "Synchronizer.h"
 
 namespace OnlineParty
 {
@@ -25,7 +26,7 @@ namespace OnlineParty
 		Enemy enemy;
 		Player player;
 		Cameraman cameraman;
-		fw::NetSurfer surver_surfer;
+		Synchronizer synchronizer;
 
 		static God & get_instance();
 		God();

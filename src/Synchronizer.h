@@ -13,9 +13,11 @@ namespace OnlineParty
 	public:
 		Synchronizer();
 		void update();
+		const fw::NetSurfer & get_server_surfer() const;
 
 
 
+		~Synchronizer();
 	private:
 		struct State
 		{
@@ -28,7 +30,7 @@ namespace OnlineParty
 
 		struct MemberP2P
 		{
-			int ID;
+			int ID;	// -1 means invalid member.
 			fw::NetSurfer surfer;
 			unsigned long long last_sync;
 		};
@@ -37,6 +39,7 @@ namespace OnlineParty
 		fw::NetSurfer server_surfer;
 		int state;
 		int my_ID;
+		MemberP2P * members;
 
 		void load_config();
 		void send_join_request();
