@@ -71,8 +71,7 @@ namespace OnlineParty
 
 		synchronizer.reset(new Synchronizer());
 		players.resize(max_member);
-	//	UI.reset(new UserInterface(get_my_player()));
-	//	UI.reset(new UserInterface());
+		UI.reset(new UserInterface(get_my_player()));
 	}
 
 	void God::update_dynamic()
