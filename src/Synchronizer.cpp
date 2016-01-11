@@ -26,6 +26,8 @@ namespace OnlineParty
 		{
 			process_request();
 		}
+
+
 	}
 
 	const fw::NetSurfer & Synchronizer::get_server_surfer() const
@@ -66,8 +68,9 @@ namespace OnlineParty
 		picojson::object & root = value.get<picojson::object>();
 		const std::string & server_hostname = root["server_ip"].get<std::string>();
 		const unsigned short server_port = static_cast<unsigned short>(root["server_port"].get<double>());
-		const int max_member = static_cast<int>(root["max_member"].get<double>());
+		max_member = static_cast<int>(root["max_member"].get<double>());
 		members = new MemberP2P[max_member];
+		init_members();
 
 		fw::IP server_ip;
 		server_ip.set_by_hostname(server_hostname);
@@ -186,12 +189,26 @@ namespace OnlineParty
 		for (auto rator = others.begin(); rator != others.end(); ++rator)
 		{
 			picojson::object other = rator->get<picojson::object>();
-			// todo
-			other["ID"].get<double>();
-			other["IP"].get<std::string>();
-			other["port"].get<double>();
+			const int ID = static_cast<int>(other["ID"].get<double>());
+			auto & member = members[ID];
+			auto & surfer = member.surfer;
+			fw::IP IP;
+			IP.set_by_hostname(other["IP"].get<std::string>());
+			const unsigned short port = static_cast<unsigned short>(other["port"].get<double>());
+
+			member.ID = ID;
+			surfer.set(IP, port);
+			member.last_sync = 0;
 		}
 	}
 
+	void Synchronizer::init_members()
+	{
+		for (int index = 0; index < max_member; ++index)
+		{
+			auto & member = members[index];
+			member.ID = -1;
+		}
+	}
 
 }

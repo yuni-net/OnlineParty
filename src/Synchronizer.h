@@ -40,6 +40,7 @@ namespace OnlineParty
 		int state;
 		int my_ID;
 		MemberP2P * members;
+		int max_member;
 
 		void load_config();
 		void send_join_request();
@@ -49,5 +50,6 @@ namespace OnlineParty
 		void throw_all_left_datas_to_trash();
 		void save_my_ID(picojson::object & root);
 		void save_others_surfer(picojson::object & root);
+		void init_members();
 	};
 }

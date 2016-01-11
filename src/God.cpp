@@ -7,9 +7,9 @@ namespace OnlineParty
 		get_instance().update_dynamic();
 	}
 
-	fw::NetSurfer & God::get_surver_surfer()
+	const fw::NetSurfer & God::get_surver_surfer()
 	{
-		return get_instance().synchronizer.get_surver_surfer();
+		return get_instance().synchronizer.get_server_surfer();
 	}
 
 	float God::get_elapsed_sec()
