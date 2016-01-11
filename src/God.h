@@ -15,6 +15,7 @@ namespace OnlineParty
 		static void update();
 		static const fw::NetSurfer & get_surver_surfer();
 		static float get_elapsed_sec();
+		static unsigned long long get_now_time();
 
 
 
