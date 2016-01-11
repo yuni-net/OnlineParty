@@ -17,6 +17,11 @@ namespace OnlineParty
 		return get_instance().timer.get_elapsed_sec();
 	}
 
+	unsigned long long God::get_now_time()
+	{
+		return get_instance().timer.get_now_time();
+	}
+
 
 
 

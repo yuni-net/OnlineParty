@@ -1,8 +1,11 @@
 #include <fstream>
 #include "Synchronizer.h"
+#include "God.h"
+#include "RequestRegister.h"
 
 namespace OnlineParty
 {
+
 	Synchronizer::Synchronizer()
 	{
 		members = nullptr;
@@ -27,7 +30,7 @@ namespace OnlineParty
 			process_request();
 		}
 
-
+		kick_afk();
 	}
 
 	const fw::NetSurfer & Synchronizer::get_server_surfer() const
@@ -46,10 +49,6 @@ namespace OnlineParty
 		}
 	}
 
-	/**
-	@brief I load the config to server_surfer.
-	@detail If I failed to load it,  I set the default parameter.
-	*/
 	void Synchronizer::load_config()
 	{
 		std::ifstream ifs("data/config/Synchronizer.json", std::ios::in);
@@ -68,18 +67,17 @@ namespace OnlineParty
 		picojson::object & root = value.get<picojson::object>();
 		const std::string & server_hostname = root["server_ip"].get<std::string>();
 		const unsigned short server_port = static_cast<unsigned short>(root["server_port"].get<double>());
+		fw::IP server_ip;
+		server_ip.set_by_hostname(server_hostname);
+		server_surfer.set(server_ip, server_port);
+
 		max_member = static_cast<int>(root["max_member"].get<double>());
 		members = new MemberP2P[max_member];
 		init_members();
 
-		fw::IP server_ip;
-		server_ip.set_by_hostname(server_hostname);
-		server_surfer.set(server_ip, server_port);
+		limit_ms_afk = static_cast<unsigned long long>(root["limit_ms_afk"].get<double>());
 	}
 
-	/**
-	@brief I send the join request.
-	*/
 	void Synchronizer::send_join_request()
 	{
 		fw::Bindata join_request;
@@ -91,9 +89,6 @@ namespace OnlineParty
 		p2p.send(server_surfer, join_request);
 	}
 
-	/**
-	@brief I expected to receive the reply for join.
-	*/
 	void Synchronizer::wait_reply_join()
 	{
 		while (p2p.are_there_any_left_datas())
@@ -131,21 +126,19 @@ namespace OnlineParty
 		}
 	}
 
-	/**
-	@brief I process the requests for synchronization.
-	*/
 	void Synchronizer::process_request()
 	{
-		// todo
+		// The others of latest data is ignore.
+		RequestRegister ter(max_member);
+		ter.process(p2p);
+		for (int index = 0; index < max_member; ++index)
+		{
+			if (ter.is_there_request(index) == false){ continue; }
+			Player & player = God::get_player(index);
+			player.process_request(ter.get_request(index));
+		}
 	}
 
-	/**
-	@brief I pop the received data, parse it and set the result to "value".
-	@param Set the "picojson::value" object for receive parsed data.
-	@return
-		true: success
-		false: failure
-	*/
 	bool Synchronizer::get_reply_server(picojson::value & value)
 	{
 		fw::Bindata data;
@@ -209,6 +202,24 @@ namespace OnlineParty
 			auto & member = members[index];
 			member.ID = -1;
 		}
+	}
+
+	void Synchronizer::kick_afk()
+	{
+		for (int index = 0; index < max_member; ++index)
+		{
+			auto & member = members[index];
+			auto gap = God::get_now_time() - member.last_sync;
+			if (gap > limit_ms_afk)
+			{
+				kick_member(index);
+			}
+		}
+	}
+
+	void Synchronizer::kick_member(const int index)
+	{
+		members[index].ID = -1;
 	}
 
 }

@@ -20,6 +20,9 @@
     <ClCompile Include="src\Synchronizer.cpp">
       <Filter>Synchronizer</Filter>
     </ClCompile>
+    <ClCompile Include="src\RequestRegister.cpp">
+      <Filter>RequestRegister</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
@@ -39,6 +42,9 @@
     </Filter>
     <Filter Include="Synchronizer">
       <UniqueIdentifier>{8cbef0a2-89eb-47fd-81a5-37db2cb3ca59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RequestRegister">
+      <UniqueIdentifier>{93799365-8583-4be6-8efc-f373ff9ea1d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,5 +67,8 @@
       <Filter>Synchronizer</Filter>
     </ClInclude>
     <ClInclude Include="src\picojson.h" />
+    <ClInclude Include="src\RequestRegister.h">
+      <Filter>RequestRegister</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
