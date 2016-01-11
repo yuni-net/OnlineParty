@@ -135,7 +135,7 @@ namespace OnlineParty
 		{
 			if (ter.is_there_request(index) == false){ continue; }
 			Player & player = God::get_player(index);
-			player.process_request(ter.get_request(index));
+			player.evaluate(ter.get_request(index));
 		}
 	}
 
