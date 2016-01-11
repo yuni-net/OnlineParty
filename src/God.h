@@ -30,7 +30,7 @@ namespace OnlineParty
 		Enemy enemy;
 		std::vector<Player> players;
 		Cameraman cameraman;
-		Synchronizer synchronizer;
+		std::unique_ptr<Synchronizer> synchronizer;
 		int max_member;
 
 		static God & get_instance();

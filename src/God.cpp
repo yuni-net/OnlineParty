@@ -9,7 +9,7 @@ namespace OnlineParty
 
 	const fw::NetSurfer & God::get_surver_surfer()
 	{
-		return get_instance().synchronizer.get_server_surfer();
+		return (*get_instance().synchronizer).get_server_surfer();
 	}
 
 	float God::get_elapsed_sec()
@@ -29,7 +29,7 @@ namespace OnlineParty
 
 	const Synchronizer & God::get_synchronizer()
 	{
-		return get_instance().synchronizer;
+		return (*get_instance().synchronizer);
 	}
 
 	Player & God::get_player(const int index)
@@ -68,6 +68,8 @@ namespace OnlineParty
 			picojson::object & root = value.get<picojson::object>();
 			max_member = static_cast<int>(root["max_member"].get<double>());
 		}
+
+		synchronizer.reset(new Synchronizer());
 		players.resize(max_member);
 	}
 
@@ -81,7 +83,7 @@ namespace OnlineParty
 		{
 			players[index].update();
 		}
-		cameraman.update(players[synchronizer.get_my_ID()].get_pos());
+		cameraman.update(players[(*synchronizer).get_my_ID()].get_pos());
 	}
 
 	God::~God()
