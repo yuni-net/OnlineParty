@@ -6,6 +6,7 @@
 #include "Cameraman.h"
 #include "Timer.h"
 #include "Synchronizer.h"
+#include "UserInterface.h"
 
 namespace OnlineParty
 {
@@ -32,11 +33,14 @@ namespace OnlineParty
 		Cameraman cameraman;
 		std::unique_ptr<Synchronizer> synchronizer;
 		int max_member;
+		//std::unique_ptr<UserInterface> UI;
+		UserInterface UI;
 
 		static God & get_instance();
 		God();
 		void update_dynamic();
 		~God();
+		Player & get_my_player();
 
 
 

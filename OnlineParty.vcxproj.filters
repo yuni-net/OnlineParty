@@ -23,6 +23,9 @@
     <ClCompile Include="src\RequestRegister.cpp">
       <Filter>RequestRegister</Filter>
     </ClCompile>
+    <ClCompile Include="src\UserInterface.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
@@ -45,6 +48,9 @@
     </Filter>
     <Filter Include="RequestRegister">
       <UniqueIdentifier>{93799365-8583-4be6-8efc-f373ff9ea1d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{a6409fc8-3ba8-4d4b-8e64-db9ddc5b8b96}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +75,9 @@
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\RequestRegister.h">
       <Filter>RequestRegister</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserInterface.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -71,6 +71,8 @@ namespace OnlineParty
 
 		synchronizer.reset(new Synchronizer());
 		players.resize(max_member);
+	//	UI.reset(new UserInterface(get_my_player()));
+	//	UI.reset(new UserInterface());
 	}
 
 	void God::update_dynamic()
@@ -83,12 +85,17 @@ namespace OnlineParty
 		{
 			players[index].update();
 		}
-		cameraman.update(players[(*synchronizer).get_my_ID()].get_pos());
+		cameraman.update(get_my_player().get_pos());
 	}
 
 	God::~God()
 	{
 		// todo
+	}
+
+	Player & God::get_my_player()
+	{
+		return players[(*synchronizer).get_my_ID()];
 	}
 
 }
