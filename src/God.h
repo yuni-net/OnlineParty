@@ -16,6 +16,9 @@ namespace OnlineParty
 		static const fw::NetSurfer & get_surver_surfer();
 		static float get_elapsed_sec();
 		static unsigned long long get_now_time();
+		static int get_max_member();
+		static const Synchronizer & get_synchronizer();
+		static Player & get_player(const int index);
 
 
 
@@ -25,9 +28,10 @@ namespace OnlineParty
 		Timer timer;
 		si3::Leaf ground;
 		Enemy enemy;
-		Player player;
+		std::vector<Player> players;
 		Cameraman cameraman;
 		Synchronizer synchronizer;
+		int max_member;
 
 		static God & get_instance();
 		God();

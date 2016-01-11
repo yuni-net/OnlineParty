@@ -8,6 +8,7 @@ namespace OnlineParty
 	{
 	public:
 		Player();
+		void init(const int ID, const fw::IP & IP, const unsigned short port);
 		void update();
 
 		si3::Coor3 get_pos() const;
@@ -51,6 +52,9 @@ namespace OnlineParty
 			};
 		};
 
+		int ID;
+		fw::NetSurfer surfer;
+		unsigned long long last_sync;
 		MyState::State state;
 		si3::Model model;
 		float radius;
@@ -68,5 +72,8 @@ namespace OnlineParty
 		void attack(const float delta_sec);
 		void slide_right(const float delta_sec);
 		void slide_left(const float delta_sec);
+		bool is_disable() const;
+		bool is_afk() const;
+		void break_away_from_game();
 	};
 }

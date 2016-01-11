@@ -8,7 +8,7 @@ namespace OnlineParty
 
 	Synchronizer::Synchronizer()
 	{
-		members = nullptr;
+	//	members = nullptr;
 		state = State::waiting_reply_join;
 		load_config();
 		send_join_request();
@@ -30,7 +30,7 @@ namespace OnlineParty
 			process_request();
 		}
 
-		kick_afk();
+	//	kick_afk();
 	}
 
 	const fw::NetSurfer & Synchronizer::get_server_surfer() const
@@ -38,15 +38,26 @@ namespace OnlineParty
 		return server_surfer;
 	}
 
+	int Synchronizer::get_my_ID() const
+	{
+		return my_ID;
+	}
+
+	unsigned long long Synchronizer::get_limit_ms_afk() const
+	{
+		return limit_ms_afk;
+	}
+
+
 
 
 
 	Synchronizer::~Synchronizer()
 	{
-		if (members)
-		{
-			delete [] members;
-		}
+	//	if (members)
+	//	{
+	//		delete [] members;
+	//	}
 	}
 
 	void Synchronizer::load_config()
@@ -71,9 +82,9 @@ namespace OnlineParty
 		server_ip.set_by_hostname(server_hostname);
 		server_surfer.set(server_ip, server_port);
 
-		max_member = static_cast<int>(root["max_member"].get<double>());
-		members = new MemberP2P[max_member];
-		init_members();
+	//	max_member = static_cast<int>(root["max_member"].get<double>());
+	//	members = new MemberP2P[max_member];
+	//	init_members();
 
 		limit_ms_afk = static_cast<unsigned long long>(root["limit_ms_afk"].get<double>());
 	}
@@ -129,9 +140,9 @@ namespace OnlineParty
 	void Synchronizer::process_request()
 	{
 		// The others of latest data is ignore.
-		RequestRegister ter(max_member);
+		RequestRegister ter(God::get_max_member());
 		ter.process(p2p);
-		for (int index = 0; index < max_member; ++index)
+		for (int index = 0; index < God::get_max_member(); ++index)
 		{
 			if (ter.is_there_request(index) == false){ continue; }
 			Player & player = God::get_player(index);
@@ -183,43 +194,47 @@ namespace OnlineParty
 		{
 			picojson::object other = rator->get<picojson::object>();
 			const int ID = static_cast<int>(other["ID"].get<double>());
-			auto & member = members[ID];
-			auto & surfer = member.surfer;
-			fw::IP IP;
-			IP.set_by_hostname(other["IP"].get<std::string>());
+			const std::string IP = other["IP"].get<std::string>();
 			const unsigned short port = static_cast<unsigned short>(other["port"].get<double>());
+			God::get_player(ID).init(ID, IP, port);
 
-			member.ID = ID;
-			surfer.set(IP, port);
-			member.last_sync = 0;
+		//	auto & member = members[ID];
+		//	auto & surfer = member.surfer;
+		//	fw::IP IP;
+		//	IP.set_by_hostname(other["IP"].get<std::string>());
+		//	const unsigned short port = static_cast<unsigned short>(other["port"].get<double>());
+
+		//	member.ID = ID;
+		//	surfer.set(IP, port);
+		//	member.last_sync = 0;
 		}
 	}
 
-	void Synchronizer::init_members()
-	{
-		for (int index = 0; index < max_member; ++index)
-		{
-			auto & member = members[index];
-			member.ID = -1;
-		}
-	}
+//	void Synchronizer::init_members()
+//	{
+//		for (int index = 0; index < max_member; ++index)
+//		{
+//			auto & member = members[index];
+//			member.ID = -1;
+//		}
+//	}
 
-	void Synchronizer::kick_afk()
-	{
-		for (int index = 0; index < max_member; ++index)
-		{
-			auto & member = members[index];
-			auto gap = God::get_now_time() - member.last_sync;
-			if (gap > limit_ms_afk)
-			{
-				kick_member(index);
-			}
-		}
-	}
+//	void Synchronizer::kick_afk()
+//	{
+//		for (int index = 0; index < max_member; ++index)
+//		{
+//			auto & member = members[index];
+//			auto gap = God::get_now_time() - member.last_sync;
+//			if (gap > limit_ms_afk)
+//			{
+//				kick_member(index);
+//			}
+//		}
+//	}
 
-	void Synchronizer::kick_member(const int index)
-	{
-		members[index].ID = -1;
-	}
+//	void Synchronizer::kick_member(const int index)
+//	{
+//		members[index].ID = -1;
+//	}
 
 }

@@ -22,6 +22,20 @@ namespace OnlineParty
 		return get_instance().timer.get_now_time();
 	}
 
+	int God::get_max_member()
+	{
+		return get_instance().max_member;
+	}
+
+	const Synchronizer & God::get_synchronizer()
+	{
+		return get_instance().synchronizer;
+	}
+
+	Player & God::get_player(const int index)
+	{
+		return get_instance().players[index];
+	}
 
 
 
@@ -39,6 +53,22 @@ namespace OnlineParty
 		ground.z(0.0f);
 		ground.scale(0.1f);
 		ground.rot_x(-si3::pi*0.5f);
+
+		std::ifstream ifs("data/config/God.json", std::ios::in);
+		picojson::value value;
+		std::string result = picojson::parse(value, ifs);
+		if (result.empty() == false)
+		{
+			// I failed to load config.
+			// I set the default parameter.
+			max_member = 20;
+		}
+		else
+		{
+			picojson::object & root = value.get<picojson::object>();
+			max_member = static_cast<int>(root["max_member"].get<double>());
+		}
+		players.resize(max_member);
 	}
 
 	void God::update_dynamic()
@@ -47,8 +77,11 @@ namespace OnlineParty
 
 		si3::Manager::register_display_object(ground);
 		enemy.update();
-		player.update();
-		cameraman.update(player.get_pos());
+		for (size_t index = 0; index < players.size(); ++index)
+		{
+			players[index].update();
+		}
+		cameraman.update(players[synchronizer.get_my_ID()].get_pos());
 	}
 
 	God::~God()

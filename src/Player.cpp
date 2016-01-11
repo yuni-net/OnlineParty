@@ -19,14 +19,31 @@ namespace OnlineParty
 		should_update = true;
 	}
 
+	void Player::init(const int ID, const fw::IP & IP, const unsigned short port)
+	{
+		this->ID = ID;
+		surfer.set(IP, port);
+		last_sync = 0;
+	}
+
 	void Player::update()
 	{
+		if (is_disable())
+		{
+			return;
+		}
+
 		if (should_update == false)
 		{
 			should_update = true;
 			return;
 		}
 
+		if (is_afk())
+		{
+			break_away_from_game();
+			return;
+		}
 		update(God::get_elapsed_sec());
 	}
 
@@ -168,5 +185,20 @@ namespace OnlineParty
 		//todo
 	}
 
+	bool Player::is_disable() const
+	{
+		return ID == -1;
+	}
+
+	bool Player::is_afk() const
+	{
+		auto gap = God::get_now_time() - last_sync;
+		return gap > God::get_synchronizer().get_limit_ms_afk();
+	}
+
+	void Player::break_away_from_game()
+	{
+		ID = -1;
+	}
 
 }

@@ -14,6 +14,8 @@ namespace OnlineParty
 		Synchronizer();
 		void update();
 		const fw::NetSurfer & get_server_surfer() const;
+		int get_my_ID() const;
+		unsigned long long get_limit_ms_afk() const;
 
 
 
@@ -39,8 +41,8 @@ namespace OnlineParty
 		fw::NetSurfer server_surfer;
 		int state;
 		int my_ID;
-		MemberP2P * members;
-		int max_member;
+	//	MemberP2P * members;
+	//	int max_member;
 		unsigned long long limit_ms_afk;
 
 		/**
@@ -76,8 +78,8 @@ namespace OnlineParty
 		void throw_all_left_datas_to_trash();
 		void save_my_ID(picojson::object & root);
 		void save_others_surfer(picojson::object & root);
-		void init_members();
-		void kick_afk();
-		void kick_member(const int index);
+	//	void init_members();
+	//	void kick_afk();
+	//	void kick_member(const int index);
 	};
 }
