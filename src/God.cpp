@@ -80,6 +80,7 @@ namespace OnlineParty
 
 		si3::Manager::register_display_object(ground);
 		enemy.update();
+		(*UI).update();
 		for (size_t index = 0; index < players.size(); ++index)
 		{
 			players[index].update();
