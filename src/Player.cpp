@@ -7,9 +7,10 @@ namespace OnlineParty
 	static const float default_radius = 10.0f;
 	static const float min_radius = 3.0f;
 
-	Player::Player()
+	Player::Player(const si3::ModelData & model_data)
 	{
-		model.load("data/Lat_Miku/Miku_mini.pmd");
+		model.model_data(model_data);
+	//	model.load("data/Lat_Miku/Miku_mini.pmd");
 		radian = (fw::xrandom() % 314159265)*0.00000001f;
 		purpose_radian = radian;
 		radius = default_radius;

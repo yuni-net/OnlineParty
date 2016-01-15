@@ -123,6 +123,7 @@ namespace OnlineParty
 				save_my_ID(root);
 				save_others_surfer(root);
 				state = State::waiting_request_sync;
+				God::on_join();
 			}
 		}
 	}

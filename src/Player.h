@@ -7,7 +7,7 @@ namespace OnlineParty
 	class Player
 	{
 	public:
-		Player();
+		Player(const si3::ModelData & model_data);
 		void init(const int ID, const fw::IP & IP, const unsigned short port);
 		void update();
 

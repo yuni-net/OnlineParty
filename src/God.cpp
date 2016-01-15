@@ -34,8 +34,15 @@ namespace OnlineParty
 
 	Player & God::get_player(const int index)
 	{
-		return get_instance().players[index];
+		return *(get_instance().players[index]);
 	}
+
+	void God::on_join()
+	{
+		get_instance().on_join_dynamic();
+	}
+
+
 
 
 
@@ -70,8 +77,12 @@ namespace OnlineParty
 		}
 
 		synchronizer.reset(new Synchronizer());
+		player_modeld.load("data/Lat_Miku/Miku_mini.pmd");
 		players.resize(max_member);
-		UI.reset(new UserInterface(get_my_player()));
+		for (int index = 0; index < max_member; ++index)
+		{
+			players[index].reset(new Player(player_modeld));
+		}
 	}
 
 	void God::update_dynamic()
@@ -79,11 +90,12 @@ namespace OnlineParty
 		timer.update();
 
 		si3::Manager::register_display_object(ground);
+		synchronizer->update();
 		enemy.update();
-		(*UI).update();
+		if (UI){ (*UI).update(); }
 		for (size_t index = 0; index < players.size(); ++index)
 		{
-			players[index].update();
+			players[index]->update();
 		}
 		cameraman.update(get_my_player().get_pos());
 	}
@@ -95,7 +107,11 @@ namespace OnlineParty
 
 	Player & God::get_my_player()
 	{
-		return players[(*synchronizer).get_my_ID()];
+		return *(players[(*synchronizer).get_my_ID()]);
 	}
 
+	void God::on_join_dynamic()
+	{
+		UI.reset(new UserInterface(get_my_player()));
+	}
 }
