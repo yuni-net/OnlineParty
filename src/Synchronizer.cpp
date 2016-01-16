@@ -3,6 +3,8 @@
 #include "God.h"
 #include "RequestRegister.h"
 
+// todo 満席だったときの処理と、いつまでたってもサーバーから返答が返ってこないときの処理と、そもそもサーバーに接続できないときの処理をする必要がある。
+
 namespace OnlineParty
 {
 
