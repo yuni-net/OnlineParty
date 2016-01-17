@@ -21,6 +21,7 @@ namespace OnlineParty
 		static const Synchronizer & get_synchronizer();
 		static Player & get_player(const int index);
 		static void on_join();
+		static bool is_my_player(const int ID);
 
 
 

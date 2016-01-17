@@ -12,6 +12,7 @@ namespace OnlineParty
 		void update();
 
 		si3::Coor3 get_pos() const;
+		const fw::NetSurfer & get_surfer() const;
 
 		/**
 		 @brief ユーザーからの操作を受け付けるためのAPI
@@ -61,6 +62,7 @@ namespace OnlineParty
 		float radian;
 		float purpose_radian;
 		bool should_update;
+		bool has_changed;
 		
 
 		void update_radius();
@@ -75,5 +77,7 @@ namespace OnlineParty
 		bool is_disable() const;
 		bool is_afk() const;
 		void break_away_from_game();
+		bool had_sync_time_elapsed() const;
+		void send_sync_data() const;
 	};
 }

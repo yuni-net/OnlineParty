@@ -6,11 +6,11 @@ namespace OnlineParty
 	static const float move_speed = 0.2f;
 	static const float default_radius = 10.0f;
 	static const float min_radius = 3.0f;
+	static const unsigned long long limit_time_to_sync = 5;
 
 	Player::Player(const si3::ModelData & model_data)
 	{
 		model.model_data(model_data);
-	//	model.load("data/Lat_Miku/Miku_mini.pmd");
 		radian = (fw::xrandom() % 314159265)*0.00000001f;
 		purpose_radian = radian;
 		radius = default_radius;
@@ -18,6 +18,7 @@ namespace OnlineParty
 		update_pos();
 		state = MyState::standingby;
 		should_update = true;
+		has_changed = true;
 	}
 
 	void Player::init(const int ID, const fw::IP & IP, const unsigned short port)
@@ -33,19 +34,32 @@ namespace OnlineParty
 		{
 			return;
 		}
-
 		if (should_update == false)
 		{
+			// This player has been already updated by 'evaluate.'
 			should_update = true;
 			return;
 		}
-
 		if (is_afk())
 		{
 			break_away_from_game();
 			return;
 		}
+
 		update(God::get_elapsed_sec());
+
+		if (God::is_my_player(ID)==false)
+		{
+			return;
+		}
+
+		if (has_changed ||
+			had_sync_time_elapsed())
+		{
+			send_sync_data();
+			has_changed = false;
+			last_sync = God::get_now_time();
+		}
 	}
 
 	si3::Coor3 Player::get_pos() const
@@ -53,27 +67,35 @@ namespace OnlineParty
 		return si3::Coor3(model.x(), model.y(), model.z());
 	}
 
+	const fw::NetSurfer & Player::get_surfer() const
+	{
+		return surfer;
+	}
 
 	void Player::on_standby()
 	{
 		state = MyState::standingby;
+		has_changed = true;
 	}
 	void Player::on_attack()
 	{
 		state = MyState::attacking;
+		has_changed = true;
 	}
 	void Player::on_slide_right()
 	{
 		state = MyState::sliding_right;
+		has_changed = true;
 	}
 	void Player::on_slide_left()
 	{
 		state = MyState::sliding_left;
+		has_changed = true;
 	}
 
 	/**
 	 sync_dataフォーマット
-	 float: delta_sec
+	 uint64: that_time
 	 int32: state値
 	 float: radius
 	 float: radian
@@ -81,16 +103,18 @@ namespace OnlineParty
 	 */
 	void Player::evaluate(fw::Bindata & sync_data)
 	{
-		float delta_sec;
-		sync_data >> delta_sec;
+		uint64_t that_time;
+		sync_data >> that_time;
 		int32_t state;
 		sync_data >> state;
 		this->state = static_cast<MyState::State>(state);
 		float y;
 		sync_data >> radius >> radian >> y;
 		model.y(y);
+		const float delta_sec = static_cast<float>(God::get_now_time() - that_time);
 		update(delta_sec);
 		should_update = false;
+		last_sync = God::get_now_time();
 	}
 
 
@@ -202,4 +226,27 @@ namespace OnlineParty
 		ID = -1;
 	}
 
+	bool Player::had_sync_time_elapsed() const
+	{
+		return God::get_now_time() - last_sync >= limit_time_to_sync;
+	}
+
+	/**
+	sync_dataフォーマット
+	uint64: that_time
+	int32: state値
+	float: radius
+	float: radian
+	float: y
+	*/
+	void Player::send_sync_data() const
+	{
+		fw::Bindata data;
+		data.add(God::get_now_time());
+		data.add(state);
+		data.add(radius);
+		data.add(radian);
+		data.add(model.y());
+		God::get_synchronizer().send_player_sync_data(ID, data);
+	}
 }

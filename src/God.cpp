@@ -42,6 +42,12 @@ namespace OnlineParty
 		get_instance().on_join_dynamic();
 	}
 
+	bool God::is_my_player(const int ID)
+	{
+		return ID == get_instance().synchronizer->get_my_ID();
+	}
+
+
 
 
 
@@ -115,6 +121,7 @@ namespace OnlineParty
 
 	void God::on_join_dynamic()
 	{
+		get_my_player().init(synchronizer->get_my_ID(), fw::IP(), 0);
 		UI.reset(new UserInterface(get_my_player()));
 		// debug
 		fw::popup("joined!!");

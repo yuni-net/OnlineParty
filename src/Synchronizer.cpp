@@ -47,6 +47,33 @@ namespace OnlineParty
 		return limit_ms_afk;
 	}
 
+	/*
+	the protocol for synchronization
+	signature "OnlineParty": string
+	version: int32_t
+	request: string exp. "sync"
+	sent-user ID: int32_t
+	*/
+	void Synchronizer::send_player_sync_data(const int ID, const fw::Bindata & data) const
+	{
+		fw::Bindata send_data;
+		send_data.add(std::string("OnlineParty"));
+		send_data.add(int32_t(0));
+		send_data.add(std::string("sync"));
+		send_data.add(int32_t(ID));
+		send_data.add(data);
+
+		// I send the data 3 times to prevent failure by data-corruption or data-unreached.
+		for (int count = 0; count < 3; ++count)
+		{
+			for (int index = 0; index < God::get_max_member(); ++index)
+			{
+				const auto & surfer = God::get_player(index).get_surfer();
+				p2p.send(surfer, send_data);
+			}
+		}
+	}
+
 
 
 
