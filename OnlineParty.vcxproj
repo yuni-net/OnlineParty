@@ -91,6 +91,7 @@
     <ClCompile Include="src\RequestRegister.cpp" />
     <ClCompile Include="src\Synchronizer.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\UserInterface.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +103,7 @@
     <ClInclude Include="src\RequestRegister.h" />
     <ClInclude Include="src\Synchronizer.h" />
     <ClInclude Include="src\Timer.h" />
+    <ClInclude Include="src\UserInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

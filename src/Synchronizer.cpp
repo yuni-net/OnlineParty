@@ -3,6 +3,8 @@
 #include "God.h"
 #include "RequestRegister.h"
 
+// todo 満席だったときの処理と、いつまでたってもサーバーから返答が返ってこないときの処理と、そもそもサーバーに接続できないときの処理をする必要がある。
+
 namespace OnlineParty
 {
 
@@ -123,6 +125,7 @@ namespace OnlineParty
 				save_my_ID(root);
 				save_others_surfer(root);
 				state = State::waiting_request_sync;
+				God::on_join();
 			}
 		}
 	}

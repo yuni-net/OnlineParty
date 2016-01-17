@@ -6,6 +6,7 @@
 #include "Cameraman.h"
 #include "Timer.h"
 #include "Synchronizer.h"
+#include "UserInterface.h"
 
 namespace OnlineParty
 {
@@ -19,6 +20,7 @@ namespace OnlineParty
 		static int get_max_member();
 		static const Synchronizer & get_synchronizer();
 		static Player & get_player(const int index);
+		static void on_join();
 
 
 
@@ -28,15 +30,19 @@ namespace OnlineParty
 		Timer timer;
 		si3::Leaf ground;
 		Enemy enemy;
-		std::vector<Player> players;
+		si3::ModelData player_modeld;
+		std::vector<std::unique_ptr<Player> > players;
 		Cameraman cameraman;
 		std::unique_ptr<Synchronizer> synchronizer;
 		int max_member;
+		std::unique_ptr<UserInterface> UI;
 
 		static God & get_instance();
 		God();
 		void update_dynamic();
 		~God();
+		Player & get_my_player();
+		void on_join_dynamic();
 
 
 
