@@ -116,5 +116,7 @@ namespace OnlineParty
 	void God::on_join_dynamic()
 	{
 		UI.reset(new UserInterface(get_my_player()));
+		// debug
+		fw::popup("joined!!");
 	}
 }

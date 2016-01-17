@@ -84,11 +84,13 @@ namespace OnlineParty
 	void Synchronizer::send_join_request()
 	{
 		fw::Bindata join_request;
-		join_request.add(std::string("{"));
-		join_request.add(std::string("\"signature\": \"OnlineParty\", "));
-		join_request.add(std::string("\"version\": 0, "));
-		join_request.add(std::string("\"request\": \"join\", "));
-		join_request.add(std::string("}"));
+		join_request.add(std::string(
+			"{"
+				"\"signature\": \"OnlineParty\", "
+				"\"version\": 0, "
+				"\"request\": \"join\""
+			"}"
+		));
 		p2p.send(server_surfer, join_request);
 	}
 
@@ -106,7 +108,7 @@ namespace OnlineParty
 			// Cuz the keys have not found.
 			// "the keys": exp. "signature", "version" and so on.
 			picojson::object & root = value.get<picojson::object>();
-			if (root["sigunature"].get<std::string>() != "OnlineParty")
+			if (root["signature"].get<std::string>() != "OnlineParty")
 			{
 				continue;
 			}
