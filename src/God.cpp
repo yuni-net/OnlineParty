@@ -97,7 +97,10 @@ namespace OnlineParty
 		{
 			players[index]->update();
 		}
-		cameraman.update(get_my_player().get_pos());
+		if (UI)
+		{
+			cameraman.update(get_my_player().get_pos());
+		}
 	}
 
 	God::~God()
