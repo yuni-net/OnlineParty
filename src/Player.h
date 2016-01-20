@@ -9,6 +9,7 @@ namespace OnlineParty
 	public:
 		Player(const si3::ModelData & model_data);
 		void init(const int ID, const fw::IP & IP, const unsigned short port);
+		void init(const int ID, const fw::NetSurfer & surfer);
 		void update();
 
 		si3::Coor3 get_pos() const;
@@ -38,6 +39,7 @@ namespace OnlineParty
 		 */
 		void evaluate(fw::Bindata & sync_data);
 
+		bool is_disable() const;
 
 
 
@@ -74,7 +76,6 @@ namespace OnlineParty
 		void attack(const float delta_sec);
 		void slide_right(const float delta_sec);
 		void slide_left(const float delta_sec);
-		bool is_disable() const;
 		bool is_afk() const;
 		void break_away_from_game();
 		bool had_sync_time_elapsed() const;

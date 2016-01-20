@@ -5,6 +5,7 @@ namespace OnlineParty
 	RequestRegister::RequestRegister(const int max_member)
 	{
 		requests.resize(max_member);
+		surfers.resize(max_member);
 	}
 
 	void RequestRegister::process(fw::P2P & p2p)
@@ -15,8 +16,8 @@ namespace OnlineParty
 		while (p2p.are_there_any_left_datas())
 		{
 			std::unique_ptr<fw::Bindata> request(new fw::Bindata());
-			fw::NetSurfer surfer;
-			p2p.pop_received_data(*request, surfer);
+			std::unique_ptr<fw::NetSurfer> surfer(new fw::NetSurfer());
+			p2p.pop_received_data(*request, *surfer);
 			/*
 			the protocol for synchronization
 			signature "OnlineParty": string
@@ -38,7 +39,7 @@ namespace OnlineParty
 			(*request) >> version;
 			if (version == 0)
 			{
-				process_v0(std::move(request));
+				process_v0(std::move(request), std::move(surfer));
 			}
 		}
 	}
@@ -53,11 +54,14 @@ namespace OnlineParty
 		return *(requests[index]);
 	}
 
+	fw::NetSurfer & RequestRegister::get_surfer(const int index) const
+	{
+		return *(surfers[index]);
+	}
 
 
 
-
-	void RequestRegister::process_v0(std::unique_ptr<fw::Bindata> request)
+	void RequestRegister::process_v0(std::unique_ptr<fw::Bindata> request, std::unique_ptr<fw::NetSurfer> surfer)
 	{
 		std::string request_text;
 		(*request) >> request_text;
@@ -71,6 +75,7 @@ namespace OnlineParty
 			}
 
 			requests[ID] = std::move(request);
+			surfers[ID] = std::move(surfer);
 		}
 	}
 }
