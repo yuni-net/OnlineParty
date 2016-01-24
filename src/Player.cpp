@@ -6,19 +6,12 @@ namespace OnlineParty
 	static const float move_speed = 0.2f;
 	static const float default_radius = 10.0f;
 	static const float min_radius = 3.0f;
-	static const unsigned long long limit_time_to_sync = 5;
+	static const unsigned long long limit_ms_to_sync = 5000;
 
 	Player::Player(const si3::ModelData & model_data)
 	{
 		model.model_data(model_data);
-		radian = (fw::xrandom() % 314159265)*0.00000001f;
-		purpose_radian = radian;
-		radius = default_radius;
-		model.y(0.0f);
-		update_pos();
-		state = MyState::standingby;
-		should_update = true;
-		has_changed = true;
+		ID = -1;
 	}
 
 	void Player::init(const int ID, const fw::IP & IP, const unsigned short port)
@@ -31,6 +24,14 @@ namespace OnlineParty
 	{
 		this->ID = ID;
 		this->surfer = surfer;
+		radian = (fw::xrandom() % 314159265)*0.00000001f;
+		purpose_radian = radian;
+		radius = default_radius;
+		model.y(0.0f);
+		update_pos();
+		state = MyState::standingby;
+		should_update = true;
+		has_changed = false;
 		last_sync = 0;
 	}
 
@@ -40,16 +41,19 @@ namespace OnlineParty
 		{
 			return;
 		}
-		if (should_update == false)
+		if (God::is_my_player(ID)==false)
 		{
-			// This player has been already updated by 'evaluate.'
-			should_update = true;
-			return;
-		}
-		if (is_afk())
-		{
-			break_away_from_game();
-			return;
+			if (should_update == false)
+			{
+				// This player has been already updated by 'evaluate.'
+				should_update = true;
+				return;
+			}
+			if (is_afk())
+			{
+				break_away_from_game();
+				return;
+			}
 		}
 
 		update(God::get_elapsed_sec());
@@ -59,8 +63,7 @@ namespace OnlineParty
 			return;
 		}
 
-		if (has_changed ||
-			had_sync_time_elapsed())
+		if (has_changed || had_sync_time_elapsed())
 		{
 			send_sync_data();
 			has_changed = false;
@@ -109,8 +112,6 @@ namespace OnlineParty
 	 */
 	void Player::evaluate(fw::Bindata & sync_data)
 	{
-		// debug
-		fw::popup("I received the sync data.");
 		uint64_t that_time;
 		sync_data >> that_time;
 		int32_t state;
@@ -236,7 +237,8 @@ namespace OnlineParty
 
 	bool Player::had_sync_time_elapsed() const
 	{
-		return God::get_now_time() - last_sync >= limit_time_to_sync;
+		const auto gap = God::get_now_time() - last_sync;
+		return gap >= limit_ms_to_sync;
 	}
 
 	/**
@@ -249,8 +251,6 @@ namespace OnlineParty
 	*/
 	void Player::send_sync_data() const
 	{
-		// debug
-		fw::popup("I send the sync data.");
 		fw::Bindata data;
 		data.add(God::get_now_time());
 		data.add(state);

@@ -123,7 +123,5 @@ namespace OnlineParty
 	{
 		get_my_player().init(synchronizer->get_my_ID(), fw::IP(), 0);
 		UI.reset(new UserInterface(get_my_player()));
-		// debug
-		fw::popup("joined!!");
 	}
 }

@@ -194,8 +194,6 @@ namespace OnlineParty
 		const std::string & result = picojson::parse(value, data.buffer());
 		if (result.empty() == false)
 		{
-			// debug
-			fw::popup(result);
 			return false;
 		}
 
