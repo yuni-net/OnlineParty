@@ -20,6 +20,8 @@ namespace OnlineParty
 
 	private:
 		unsigned long long count;
+		unsigned long long base_count;
+		std::chrono::system_clock::time_point first;
 		std::chrono::system_clock::time_point last;
 		float elapsed_sec;
 
