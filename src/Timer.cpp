@@ -7,20 +7,32 @@ namespace OnlineParty
 	Timer::Timer()
 	{
 		SYSTEMTIME st;
+		first = std::chrono::system_clock::now();
 		GetSystemTime(&st);
-		count = time_to_ms(st);
-		last = std::chrono::system_clock::now();
+		base_count = time_to_ms(st);
+		count = base_count;
+		last = first;
 	}
 
 	void Timer::update()
 	{
 		auto now = std::chrono::system_clock::now();
-		const auto & gap = now - last;
 
-		const long long & gap_ms = std::chrono::duration_cast<std::chrono::milliseconds>(gap).count();
-		count += gap_ms;
+		const auto & gap_from_last = now - last;
+		last = now;
+		const long long & elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(gap_from_last).count();
+		if (elapsed_ms <= 0)
+		{
+			// 経過時間ゼロが連発するとゲームの進行速度がほかの端末と大きくずれてしまうから
+			Sleep(2);
+			update();
+			return;
+		}
+		elapsed_sec = static_cast<float>(elapsed_ms)*0.001f;
 
-		elapsed_sec = static_cast<float>(std::chrono::duration_cast<std::chrono::seconds>(gap).count());
+		const auto & gap_from_first = now - first;
+		const long long & gap_ms_first = std::chrono::duration_cast<std::chrono::milliseconds>(gap_from_first).count();
+		count = base_count + gap_ms_first;
 	}
 
 	float Timer::get_elapsed_sec()
