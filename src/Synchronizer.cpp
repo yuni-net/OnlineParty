@@ -68,6 +68,7 @@ namespace OnlineParty
 		{
 			for (int index = 0; index < God::get_max_member(); ++index)
 			{
+				if (index == my_ID){ continue; }
 				const auto & surfer = God::get_player(index).get_surfer();
 				p2p.send(surfer, send_data);
 			}
@@ -168,6 +169,11 @@ namespace OnlineParty
 		{
 			if (ter.is_there_request(index) == false){ continue; }
 			Player & player = God::get_player(index);
+			if (player.is_disable())
+			{
+				// todo
+				player.init(index, ter.get_surfer(index));
+			}
 			player.evaluate(ter.get_request(index));
 		}
 	}
@@ -188,6 +194,8 @@ namespace OnlineParty
 		const std::string & result = picojson::parse(value, data.buffer());
 		if (result.empty() == false)
 		{
+			// debug
+			fw::popup(result);
 			return false;
 		}
 

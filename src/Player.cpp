@@ -23,8 +23,14 @@ namespace OnlineParty
 
 	void Player::init(const int ID, const fw::IP & IP, const unsigned short port)
 	{
-		this->ID = ID;
+		fw::NetSurfer surfer;
 		surfer.set(IP, port);
+		init(ID, surfer);
+	}
+	void Player::init(const int ID, const fw::NetSurfer & surfer)
+	{
+		this->ID = ID;
+		this->surfer = surfer;
 		last_sync = 0;
 	}
 
@@ -103,6 +109,8 @@ namespace OnlineParty
 	 */
 	void Player::evaluate(fw::Bindata & sync_data)
 	{
+		// debug
+		fw::popup("I received the sync data.");
 		uint64_t that_time;
 		sync_data >> that_time;
 		int32_t state;
@@ -241,6 +249,8 @@ namespace OnlineParty
 	*/
 	void Player::send_sync_data() const
 	{
+		// debug
+		fw::popup("I send the sync data.");
 		fw::Bindata data;
 		data.add(God::get_now_time());
 		data.add(state);
