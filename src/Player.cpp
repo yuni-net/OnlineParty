@@ -81,6 +81,11 @@ namespace OnlineParty
 		return surfer;
 	}
 
+	void Player::on_lookie_join()
+	{
+		has_changed = true;
+	}
+
 	void Player::on_standby()
 	{
 		state = MyState::standingby;
@@ -112,6 +117,8 @@ namespace OnlineParty
 	 */
 	void Player::evaluate(fw::Bindata & sync_data)
 	{
+		// debug
+		fw::view().set("sync_data was received!", 0);
 		uint64_t that_time;
 		sync_data >> that_time;
 		int32_t state;

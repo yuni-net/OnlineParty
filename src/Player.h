@@ -16,6 +16,12 @@ namespace OnlineParty
 		const fw::NetSurfer & get_surfer() const;
 
 		/**
+		@brief 新しいユーザーが参加したことを検知したときこのAPIを呼び出してください。
+		@detail 内部で同期データを送信するフラグが立ちます。
+		*/
+		void on_lookie_join();
+
+		/**
 		 @brief ユーザーからの操作を受け付けるためのAPI
 		 */
 		void on_standby();

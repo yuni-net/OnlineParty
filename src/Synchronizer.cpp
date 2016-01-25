@@ -173,6 +173,7 @@ namespace OnlineParty
 			{
 				// todo
 				player.init(index, ter.get_surfer(index));
+				God::get_player(get_my_ID()).on_lookie_join();
 			}
 			player.evaluate(ter.get_request(index));
 		}
