@@ -69,7 +69,9 @@ namespace OnlineParty
 			for (int index = 0; index < God::get_max_member(); ++index)
 			{
 				if (index == my_ID){ continue; }
-				const auto & surfer = God::get_player(index).get_surfer();
+				const auto & player = God::get_player(index);
+				if (player.is_disable()){ continue; }
+				const auto & surfer = player.get_surfer();
 				p2p.send(surfer, send_data);
 			}
 		}
