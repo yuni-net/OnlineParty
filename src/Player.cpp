@@ -3,6 +3,7 @@
 
 namespace OnlineParty
 {
+	static const float slide_speed = 0.2f;
 	static const float move_speed = 0.2f;
 	static const float default_radius = 10.0f;
 	static const float min_radius = 3.0f;
@@ -216,11 +217,13 @@ namespace OnlineParty
 
 	void Player::slide_right(const float delta_sec)
 	{
+		radian += slide_speed * delta_sec;
 		//todo
 	}
 
 	void Player::slide_left(const float delta_sec)
 	{
+		radian -= slide_speed * delta_sec;
 		//todo
 	}
 

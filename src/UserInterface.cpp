@@ -3,10 +3,12 @@
 
 namespace OnlineParty
 {
+#if 0
 	UserInterface::UserInterface()
 	{
 		// Nothing
 	}
+#endif
 
 	UserInterface::UserInterface(Player & myplayer)
 	{
