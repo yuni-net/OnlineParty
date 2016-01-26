@@ -89,21 +89,37 @@ namespace OnlineParty
 
 	void Player::on_standby()
 	{
+		if (state == MyState::standingby)
+		{
+			return;
+		}
 		state = MyState::standingby;
 		has_changed = true;
 	}
 	void Player::on_attack()
 	{
+		if (state == MyState::attacking)
+		{
+			return;
+		}
 		state = MyState::attacking;
 		has_changed = true;
 	}
 	void Player::on_slide_right()
 	{
+		if (state == MyState::sliding_right)
+		{
+			return;
+		}
 		state = MyState::sliding_right;
 		has_changed = true;
 	}
 	void Player::on_slide_left()
 	{
+		if (state == MyState::sliding_left)
+		{
+			return;
+		}
 		state = MyState::sliding_left;
 		has_changed = true;
 	}

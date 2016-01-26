@@ -7,8 +7,12 @@ namespace OnlineParty
 	class UserInterface
 	{
 	public:
-	//	UserInterface();
-		UserInterface(Player & myplayer);
+		UserInterface(Player & my_player);
 		void update();
+
+
+
+	private:
+		Player & myplayer;
 	};
 }
