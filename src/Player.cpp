@@ -32,8 +32,8 @@ namespace OnlineParty
 		update_pos();
 		state = MyState::standingby;
 		should_update = true;
-		has_changed = false;
-		last_sync = 0;
+		has_changed = true;
+		last_sync = God::get_now_time();
 	}
 
 	void Player::update()
