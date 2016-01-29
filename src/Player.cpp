@@ -26,7 +26,6 @@ namespace OnlineParty
 		this->ID = ID;
 		this->surfer = surfer;
 		radian = (fw::xrandom() % 314159265)*0.00000001f;
-		purpose_radian = radian;
 		radius = default_radius;
 		model.y(0.0f);
 		update_pos();
@@ -141,6 +140,8 @@ namespace OnlineParty
 		this->state = static_cast<MyState::State>(state);
 		float y;
 		sync_data >> radius >> radian >> y;
+		// debug
+		fw::view().set(fw::cnct() << "sent radian for No." << ID << ": " << radian, 10 + ID);
 		model.y(y);
 		const float delta_sec = static_cast<float>(God::get_now_time() - that_time);
 		update(delta_sec);
@@ -184,6 +185,7 @@ namespace OnlineParty
 	{
 		model.x(cos(radian)*radius);
 		model.z(sin(radian)*radius);
+		fw::view().set(fw::cnct() << "No."<<ID<<" radian: " << radian, ID);
 	}
 
 	void Player::look_at_center()
@@ -212,6 +214,7 @@ namespace OnlineParty
 			slide_left(delta_sec);
 		}
 
+		update_pos();
 		look_at_center();
 		si3::Manager::register_display_object(model);
 	}
@@ -234,14 +237,12 @@ namespace OnlineParty
 	void Player::slide_right(const float delta_sec)
 	{
 		radian += slide_speed * delta_sec;
-		update_pos();
 		//todo
 	}
 
 	void Player::slide_left(const float delta_sec)
 	{
 		radian -= slide_speed * delta_sec;
-		update_pos();
 		//todo
 	}
 

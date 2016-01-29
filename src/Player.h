@@ -68,7 +68,7 @@ namespace OnlineParty
 		si3::Model model;
 		float radius;
 		float radian;
-		float purpose_radian;
+	//	float purpose_radian;
 		bool should_update;
 		bool has_changed;
 		
