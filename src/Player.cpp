@@ -143,7 +143,7 @@ namespace OnlineParty
 		// debug
 		fw::view().set(fw::cnct() << "sent radian for No." << ID << ": " << radian, 10 + ID);
 		model.y(y);
-		const float delta_sec = static_cast<float>(God::get_now_time() - that_time);
+		const float delta_sec = static_cast<float>(God::get_now_time() - that_time)/1000.0f;
 		update(delta_sec);
 		should_update = false;
 		last_sync = God::get_now_time();
