@@ -89,6 +89,8 @@ namespace OnlineParty
 		{
 			players[index].reset(new Player(player_modeld));
 		}
+
+		fps_measure.reset(new FpsMeasure(get_now_time()));
 	}
 
 	void God::update_dynamic()
@@ -107,6 +109,8 @@ namespace OnlineParty
 		{
 			cameraman.update(get_my_player().get_pos());
 		}
+
+		fps_measure->update();
 	}
 
 	God::~God()

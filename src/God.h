@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "Synchronizer.h"
 #include "UserInterface.h"
+#include "../FpsMeasure.h"
 
 namespace OnlineParty
 {
@@ -37,6 +38,7 @@ namespace OnlineParty
 		std::unique_ptr<Synchronizer> synchronizer;
 		int max_member;
 		std::unique_ptr<UserInterface> UI;
+		std::unique_ptr<FpsMeasure> fps_measure;
 
 		static God & get_instance();
 		God();

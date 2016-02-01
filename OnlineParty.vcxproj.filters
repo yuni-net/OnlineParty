@@ -26,6 +26,9 @@
     <ClCompile Include="src\UserInterface.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="FpsMeasure.cpp">
+      <Filter>FpsMeasure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
@@ -51,6 +54,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{a6409fc8-3ba8-4d4b-8e64-db9ddc5b8b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FpsMeasure">
+      <UniqueIdentifier>{03bafcdd-b4f1-489d-a134-88ca2fe6a8b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="src\UserInterface.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FpsMeasure.h">
+      <Filter>FpsMeasure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
