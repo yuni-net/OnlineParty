@@ -8,6 +8,13 @@ namespace OnlineParty
 		surfers.resize(max_member);
 	}
 
+	/*
+	the protocol for synchronization
+	signature "OnlineParty": string
+	version: int32_t
+	request: string exp. "sync"
+	sent-user ID: int32_t
+	*/
 	void RequestRegister::process(fw::P2P & p2p)
 	{
 		// The others of latest data is ignore.
@@ -17,14 +24,19 @@ namespace OnlineParty
 		{
 			std::unique_ptr<fw::Bindata> request(new fw::Bindata());
 			std::unique_ptr<fw::NetSurfer> surfer(new fw::NetSurfer());
-			p2p.pop_received_data(*request, *surfer);
-			/*
-			the protocol for synchronization
-			signature "OnlineParty": string
-			version: int32_t
-			request: string exp. "sync"
-			sent-user ID: int32_t
-			*/
+			const bool did_succeed = p2p.pop_received_data(*request, *surfer);
+			if (did_succeed == false)
+			{
+				continue;
+			}
+
+			// todo bugfix
+			// I received invalid data in the case:
+			//     * the other player exit.
+			//     * I join the room which the other player has just exit.
+			// Then, the data size is zero.
+			// And, the 'signature' which is shown below is NULL.
+			// So, this program will be terminated in the below 'signature != std::string("OnlineParty")'.
 			const char * signature = (*request).buffer();
 			if (signature != std::string("OnlineParty"))
 			{

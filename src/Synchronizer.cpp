@@ -72,7 +72,7 @@ namespace OnlineParty
 				const auto & player = God::get_player(index);
 				if (player.is_disable()){ continue; }
 				const auto & surfer = player.get_surfer();
-				p2p.send(surfer, send_data);
+				bool did_succeed = p2p.send(surfer, send_data);
 			}
 		}
 	}
