@@ -18,6 +18,8 @@ namespace OnlineParty
 	*/
 	void RequestRegister::process(fw::P2P & p2p)
 	{
+		static int max_fail = 0;
+		int fail_count = 0;
 		static int max_count = 0;
 		int count = 0;
 		NeckMeasure::init();
@@ -27,10 +29,6 @@ namespace OnlineParty
 		while (true)
 		{
 			++count;
-			if (count > max_count)
-			{
-				max_count = count;
-			}
 			double beg = fw::gettimeofday();
 			const bool are_there = p2p.are_there_any_left_datas();
 			double end = fw::gettimeofday();
@@ -52,6 +50,7 @@ namespace OnlineParty
 			NeckMeasure::set(1, fw::cnct() << "p2p.pop_received_data(*request, *surfer)にかかった時間: " << gap << "秒", gap);
 			if (did_succeed == false)
 			{
+				++fail_count;
 				continue;
 			}
 
@@ -77,8 +76,18 @@ namespace OnlineParty
 			}
 		}
 
+		if (count > max_count)
+		{
+			max_count = count;
+		}
 		fw::view().set(fw::cnct() << "今回のwhileループ数: " << count, 6);
 		fw::view().set(fw::cnct() << "最大whileループ数: " << max_count, 7);
+
+		if (fail_count > max_fail)
+		{
+			max_fail = fail_count;
+		}
+		fw::view().set(fw::cnct() << "max of p2p.pop_received_data: " << max_fail, 8);
 	}
 
 	bool RequestRegister::is_there_request(const int index) const
