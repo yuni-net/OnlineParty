@@ -29,6 +29,9 @@
     <ClCompile Include="FpsMeasure.cpp">
       <Filter>FpsMeasure</Filter>
     </ClCompile>
+    <ClCompile Include="NeckMeasure.cpp">
+      <Filter>NeckMeasure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
@@ -57,6 +60,9 @@
     </Filter>
     <Filter Include="FpsMeasure">
       <UniqueIdentifier>{03bafcdd-b4f1-489d-a134-88ca2fe6a8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NeckMeasure">
+      <UniqueIdentifier>{261a9628-194a-4fcd-89b3-14fe8a081aac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +93,9 @@
     </ClInclude>
     <ClInclude Include="FpsMeasure.h">
       <Filter>FpsMeasure</Filter>
+    </ClInclude>
+    <ClInclude Include="NeckMeasure.h">
+      <Filter>NeckMeasure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

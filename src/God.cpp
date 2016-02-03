@@ -1,4 +1,5 @@
 #include "God.h"
+#include "../NeckMeasure.h"
 
 namespace OnlineParty
 {
@@ -98,13 +99,22 @@ namespace OnlineParty
 		timer.update();
 
 		si3::Manager::register_display_object(ground);
+		double beg = fw::gettimeofday();
 		synchronizer->update();
+		double end = fw::gettimeofday();
+		double gap = end - beg;
+		NeckMeasure::set(0, fw::cnct() << "Synchronizer::update‚É‚©‚©‚Á‚½ŠÔ: " << gap << "•b", gap);
+
 		enemy.update();
 		if (UI){ (*UI).update(); }
+		beg = fw::gettimeofday();
 		for (size_t index = 0; index < players.size(); ++index)
 		{
 			players[index]->update();
 		}
+		end = fw::gettimeofday();
+		gap = end - beg;
+		NeckMeasure::set(1, fw::cnct() << "for(){players[index]->update()}‚É‚©‚©‚Á‚½ŠÔ: " << gap << "•b", gap);
 		if (UI)
 		{
 			cameraman.update(get_my_player().get_pos());
