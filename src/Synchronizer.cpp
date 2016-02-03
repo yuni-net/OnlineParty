@@ -167,7 +167,9 @@ namespace OnlineParty
 	{
 		// The others of latest data is ignore.
 		RequestRegister ter(God::get_max_member());
+
 		ter.process(p2p);
+
 		for (int index = 0; index < God::get_max_member(); ++index)
 		{
 			if (ter.is_there_request(index) == false){ continue; }

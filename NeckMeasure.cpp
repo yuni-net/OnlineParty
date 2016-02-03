@@ -33,7 +33,7 @@ namespace OnlineParty
 		requests.setsize(20);
 		for (unsigned int index = 0; index < requests.size(); ++index)
 		{
-			requests[index].max_per = 0.00000000;
+			requests[index].max_sec = 0.00000000;
 			requests[index].min_per = 8192;
 		}
 	}
@@ -50,16 +50,12 @@ namespace OnlineParty
 		for (unsigned int index = 0; index < requests.size(); ++index)
 		{
 			if (requests[index].str == ""){ continue; }
-			const double percent = requests[index].val / gap;
-			if (requests[index].max_per < percent)
-			{
-				requests[index].max_per = percent;
-			}
+			const double percent = requests[index].val*100.0 / gap;
 			if (requests[index].min_per > percent)
 			{
 				requests[index].min_per = percent;
 			}
-			fw::view().set(fw::cnct() << requests[index].str << "　全体の" << percent << "%　Max"<<requests[index].max_per<<"%　Min"<<requests[index].min_per<<"%", 2 + index);
+			fw::view().set(fw::cnct() << requests[index].str << "　全体の" << percent << "%　Max" << requests[index].max_sec << "秒　Min" << requests[index].min_per << "%", 2 + index);
 		}
 
 		last_time = now_time;
@@ -71,6 +67,10 @@ namespace OnlineParty
 
 		requests[index].str = str;
 		requests[index].val = val;
+		if (requests[index].max_sec < requests[index].val)
+		{
+			requests[index].max_sec = requests[index].val;
+		}
 	}
 
 

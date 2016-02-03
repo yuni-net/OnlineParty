@@ -1,4 +1,5 @@
 #include "RequestRegister.h"
+#include "../NeckMeasure.h"
 
 namespace OnlineParty
 {
@@ -17,18 +18,38 @@ namespace OnlineParty
 	*/
 	void RequestRegister::process(fw::P2P & p2p)
 	{
+		static int max_count = 0;
+		int count = 0;
+		NeckMeasure::init();
 		// The others of latest data is ignore.
 		// todo WARNING: There is a vulnerability that the spoofing is possible by declarating the ID
 		// Cuz the legitimacy about the relationship between ID and surfer is NOT verified.
-		while (p2p.are_there_any_left_datas())
+		while (true)
 		{
+			++count;
+			if (count > max_count)
+			{
+				max_count = count;
+			}
+			double beg = fw::gettimeofday();
+			const bool are_there = p2p.are_there_any_left_datas();
+			double end = fw::gettimeofday();
+			double gap = end - beg;
+			NeckMeasure::set(0, fw::cnct() << "p2p.are_there_any_left_datas()‚É‚©‚©‚Á‚½ŽžŠÔ: " << gap << "•b", gap);
+			NeckMeasure::each_frame();
+			if (are_there == false){ break; }
+
 			std::unique_ptr<fw::Bindata> request(new fw::Bindata());
 			std::unique_ptr<fw::NetSurfer> surfer(new fw::NetSurfer());
 			// todo bugfix
 			// 'p2p.pop_received_data' will be failed in the case:
 			//     * the other player exit.
 			//     * I join the room which the other player has just exit.
+			beg = fw::gettimeofday();
 			const bool did_succeed = p2p.pop_received_data(*request, *surfer);
+			end = fw::gettimeofday();
+			gap = end - beg;
+			NeckMeasure::set(1, fw::cnct() << "p2p.pop_received_data(*request, *surfer)‚É‚©‚©‚Á‚½ŽžŠÔ: " << gap << "•b", gap);
 			if (did_succeed == false)
 			{
 				continue;
@@ -48,9 +69,16 @@ namespace OnlineParty
 			(*request) >> version;
 			if (version == 0)
 			{
+				beg = fw::gettimeofday();
 				process_v0(std::move(request), std::move(surfer));
+				end = fw::gettimeofday();
+				gap = end - beg;
+				NeckMeasure::set(2, fw::cnct() << "process_v0(std::move(request), std::move(surfer))‚É‚©‚©‚Á‚½ŽžŠÔ: " << gap << "•b", gap);
 			}
 		}
+
+		fw::view().set(fw::cnct() << "¡‰ñ‚Ìwhileƒ‹[ƒv”: " << count, 6);
+		fw::view().set(fw::cnct() << "Å‘åwhileƒ‹[ƒv”: " << max_count, 7);
 	}
 
 	bool RequestRegister::is_there_request(const int index) const

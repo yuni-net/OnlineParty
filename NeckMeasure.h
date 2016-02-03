@@ -16,7 +16,7 @@ namespace OnlineParty
 		{
 			std::string str;
 			double val;
-			double max_per;
+			double max_sec;
 			double min_per;
 		};
 
