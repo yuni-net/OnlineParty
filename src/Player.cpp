@@ -140,8 +140,6 @@ namespace OnlineParty
 		this->state = static_cast<MyState::State>(state);
 		float y;
 		sync_data >> radius >> radian >> y;
-		// debug
-		fw::view().set(fw::cnct() << "sent radian for No." << ID << ": " << radian, 10 + ID);
 		model.y(y);
 		const float delta_sec = static_cast<float>(God::get_now_time() - that_time)/1000.0f;
 		update(delta_sec);

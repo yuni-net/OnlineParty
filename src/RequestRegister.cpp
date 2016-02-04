@@ -30,13 +30,6 @@ namespace OnlineParty
 				continue;
 			}
 
-			// todo bugfix
-			// I received invalid data in the case:
-			//     * the other player exit.
-			//     * I join the room which the other player has just exit.
-			// Then, the data size is zero.
-			// And, the 'signature' which is shown below is NULL.
-			// So, this program will be terminated in the below 'signature != std::string("OnlineParty")'.
 			const char * signature = (*request).buffer();
 			if (signature != std::string("OnlineParty"))
 			{
