@@ -183,7 +183,6 @@ namespace OnlineParty
 	{
 		model.x(cos(radian)*radius);
 		model.z(sin(radian)*radius);
-		fw::view().set(fw::cnct() << "No."<<ID<<" radian: " << radian, ID);
 	}
 
 	void Player::look_at_center()
