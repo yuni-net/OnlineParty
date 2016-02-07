@@ -24,6 +24,7 @@ namespace OnlineParty
 		static void on_join();
 		static bool is_my_player(const int ID);
 		static Enemy & get_enemy();
+		static SkillManager & get_skill_manager();
 
 
 

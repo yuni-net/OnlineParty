@@ -29,6 +29,9 @@
     <ClCompile Include="src\SkillManager.cpp">
       <Filter>SkillManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ThunderBolt.cpp">
+      <Filter>Skill</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
@@ -57,6 +60,9 @@
     </Filter>
     <Filter Include="SkillManager">
       <UniqueIdentifier>{5d1f293b-ff24-435d-878a-f09641293572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skill">
+      <UniqueIdentifier>{e4a6d8e2-26af-4f04-a802-4c08fcef8e4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -89,5 +95,11 @@
       <Filter>SkillManager</Filter>
     </ClInclude>
     <ClInclude Include="src\MsRadian.h" />
+    <ClInclude Include="src\Skill.h">
+      <Filter>Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ThunderBolt.h">
+      <Filter>Skill</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

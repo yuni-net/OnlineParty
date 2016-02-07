@@ -6,4 +6,10 @@ namespace OnlineParty
 	{
 		// todo
 	}
+
+	void SkillManager::add(std::unique_ptr<Skill> skill)
+	{
+		// todo
+	}
+
 }

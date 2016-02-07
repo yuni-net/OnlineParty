@@ -52,6 +52,11 @@ namespace OnlineParty
 		return get_instance().enemy;
 	}
 
+	SkillManager & God::get_skill_manager()
+	{
+		return get_instance().skill_manager;
+	}
+
 
 
 

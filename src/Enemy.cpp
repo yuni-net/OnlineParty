@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "God.h"
+#include "ThunderBolt.h"
 
 namespace OnlineParty
 {
@@ -48,8 +49,11 @@ namespace OnlineParty
 			return;
 		}
 
+		const bool done_recent = schedules_attack[1].ms_radian.ms == schedules[0].ms;
+
 		schedules_attack[0].ms_radian = schedules[0];
 		schedules_attack[0].done = false;
+		if (done_recent){ schedules_attack[0].done = true; }
 		schedules_attack[1].ms_radian = schedules[1];
 		schedules_attack[1].done = false;
 	}
@@ -106,8 +110,9 @@ namespace OnlineParty
 		{
 			schedule = &(schedules_attack[1]);
 		}
-		God::get_skill_manager().add(std::move(new ThunderBolt(schedule->ms_radian.ms, schedule->ms_radian.radian)));
-		shedule->done = true;
+		std::unique_ptr<ThunderBolt> thunder_bold(new ThunderBolt(schedule->ms_radian.ms, schedule->ms_radian.radian));
+		God::get_skill_manager().add(std::move(thunder_bold));
+		schedule->done = true;
 	}
 
 

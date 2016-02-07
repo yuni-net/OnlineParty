@@ -91,6 +91,7 @@
     <ClCompile Include="src\RequestRegister.cpp" />
     <ClCompile Include="src\SkillManager.cpp" />
     <ClCompile Include="src\Synchronizer.cpp" />
+    <ClCompile Include="src\ThunderBolt.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\UserInterface.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
@@ -103,8 +104,10 @@
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\RequestRegister.h" />
+    <ClInclude Include="src\Skill.h" />
     <ClInclude Include="src\SkillManager.h" />
     <ClInclude Include="src\Synchronizer.h" />
+    <ClInclude Include="src\ThunderBolt.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\UserInterface.h" />
   </ItemGroup>
