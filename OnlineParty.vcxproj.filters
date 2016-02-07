@@ -52,6 +52,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{a6409fc8-3ba8-4d4b-8e64-db9ddc5b8b96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SkillManager">
+      <UniqueIdentifier>{5d1f293b-ff24-435d-878a-f09641293572}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\God.h">
@@ -78,6 +81,9 @@
     </ClInclude>
     <ClInclude Include="src\UserInterface.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SkillManager.h">
+      <Filter>SkillManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

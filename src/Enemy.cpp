@@ -12,6 +12,16 @@ namespace OnlineParty
 
 	void Enemy::update()
 	{
+		if (should_I_sync())
+		{
+			download_enemy_sync_data();
+		}
+
+		if (is_it_time_to_begin_attack())
+		{
+			begin_attack();
+		}
+
 		si3::Manager::register_display_object(model);
 	}
 }

@@ -101,6 +101,7 @@
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\RequestRegister.h" />
+    <ClInclude Include="src\SkillManager.h" />
     <ClInclude Include="src\Synchronizer.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\UserInterface.h" />
