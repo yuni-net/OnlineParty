@@ -77,6 +77,15 @@ namespace OnlineParty
 		}
 	}
 
+	void Synchronizer::send_request_to_server(const fw::Bindata & data) const
+	{
+		// I send the data 3 times to prevent failure by data-corruption or data-unreached.
+		for (int count = 0; count < 3; ++count)
+		{
+			p2p.send(server_surfer, data);
+		}
+	}
+
 
 
 

@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "Synchronizer.h"
 #include "UserInterface.h"
+#include "SkillManager.h"
 
 namespace OnlineParty
 {
@@ -22,6 +23,7 @@ namespace OnlineParty
 		static Player & get_player(const int index);
 		static void on_join();
 		static bool is_my_player(const int ID);
+		static Enemy & get_enemy();
 
 
 
@@ -37,6 +39,7 @@ namespace OnlineParty
 		std::unique_ptr<Synchronizer> synchronizer;
 		int max_member;
 		std::unique_ptr<UserInterface> UI;
+		SkillManager skill_manager;
 
 		static God & get_instance();
 		God();

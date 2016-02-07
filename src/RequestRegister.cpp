@@ -1,11 +1,13 @@
 #include "RequestRegister.h"
+#include "God.h"
 
 namespace OnlineParty
 {
+	const unsigned int signature_size = 12;	// 12 means strlen("OnlineParty") + 1 as null string.
+
 	RequestRegister::RequestRegister(const int max_member)
 	{
-		requests.resize(max_member);
-		surfers.resize(max_member);
+		sync_datas.resize(max_member);
 	}
 
 	/*
@@ -22,65 +24,120 @@ namespace OnlineParty
 		// Cuz the legitimacy about the relationship between ID and surfer is NOT verified.
 		while (p2p.are_there_any_left_datas())
 		{
-			std::unique_ptr<fw::Bindata> request(new fw::Bindata());
-			std::unique_ptr<fw::NetSurfer> surfer(new fw::NetSurfer());
-			const bool did_succeed = p2p.pop_received_data(*request, *surfer);
+			std::unique_ptr<SyncData> sync_data(new SyncData());
+			const bool did_succeed = p2p.pop_received_data(sync_data->request, sync_data->surfer);
 			if (did_succeed == false)
 			{
 				continue;
 			}
 
-			const char * signature = (*request).buffer();
-			if (signature != std::string("OnlineParty"))
+			char signature[signature_size];
+			sync_data->request.copy(signature, signature_size);
+
+			if (signature == std::string("OnlineParty"))
 			{
-				// This is NOT OnlineParty data.
+				process_binary_request(std::move(sync_data));
+				continue;
+			}
+			
+			picojson::value value;
+			const std::string & result = picojson::parse(value, sync_data->request.buffer());
+			if (result.empty())
+			{
+				process_json_request(value);
 				continue;
 			}
 
-			std::string signature_box;
-			(*request) >> signature_box;
-
-			int32_t version;
-			(*request) >> version;
-			if (version == 0)
-			{
-				process_v0(std::move(request), std::move(surfer));
-			}
+			// That was not the request for OnlineParty.
 		}
 	}
 
+
 	bool RequestRegister::is_there_request(const int index) const
 	{
-		return requests[index] != nullptr;
+		return sync_datas[index] != nullptr;
 	}
 
 	fw::Bindata & RequestRegister::get_request(const int index) const
 	{
-		return *(requests[index]);
+		return sync_datas[index]->request;
 	}
 
 	fw::NetSurfer & RequestRegister::get_surfer(const int index) const
 	{
-		return *(surfers[index]);
+		return sync_datas[index]->surfer;
 	}
 
 
 
-	void RequestRegister::process_v0(std::unique_ptr<fw::Bindata> request, std::unique_ptr<fw::NetSurfer> surfer)
+	void RequestRegister::process_binary_request(std::unique_ptr<SyncData> sync_data)
+	{
+		fw::Bindata & request = sync_data->request;
+		request.proceed(signature_size);
+
+		int32_t version;
+		sync_data->request >> version;
+		if (version == 0)
+		{
+			process_binary_request_v0(std::move(sync_data));
+		}
+		else
+		{
+			// The version is not supported.
+		}
+	}
+
+	void RequestRegister::process_binary_request_v0(std::unique_ptr<SyncData> sync_data)
 	{
 		std::string request_text;
-		(*request) >> request_text;
+		sync_data->request >> request_text;
 		if (request_text == "sync")
 		{
 			int32_t ID;
-			(*request) >> ID;
-			if (static_cast<unsigned int>(ID) >= requests.size())
+			sync_data->request >> ID;
+			if (static_cast<unsigned int>(ID) >= sync_datas.size())
 			{
 				return;
 			}
 
-			requests[ID] = std::move(request);
-			surfers[ID] = std::move(surfer);
+			sync_datas[ID] = std::move(sync_data);
 		}
 	}
+
+	void RequestRegister::process_json_request(picojson::value & value)
+	{
+		// The program will be terminated when the data is invalid
+		// Cuz the keys have not found.
+		// "the keys": exp. "signature", "version" and so on.
+		picojson::object & root = value.get<picojson::object>();
+		if (root["signature"].get<std::string>() != "OnlineParty")
+		{
+			// This is not OnlineParty data.
+			return;
+		}
+
+		if (static_cast<int>(root["version"].get<double>()) == 0)
+		{
+			process_json_request_v0(root);
+		}
+		else
+		{
+			// The version is not supported.
+		}
+	}
+
+	void RequestRegister::process_json_request_v0(picojson::object & root)
+	{
+		if (root["reply"].get<std::string>() == "sync_enemy_attack")
+		{
+			unsigned long long ms_to_begin_attack = static_cast<unsigned long long>(root["ms_to_begin_attack"].get<double>());
+			float offset_radian = static_cast<float>(root["offset_radian"].get<double>());
+			God::get_enemy().sync_enemy_attack(ms_to_begin_attack, offset_radian);
+		}
+		else
+		{
+			// This is unknown reply.
+		}
+	}
+
 }

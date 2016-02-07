@@ -47,6 +47,10 @@ namespace OnlineParty
 		return ID == get_instance().synchronizer->get_my_ID();
 	}
 
+	Enemy & God::get_enemy()
+	{
+		return get_instance().enemy;
+	}
 
 
 
@@ -97,6 +101,7 @@ namespace OnlineParty
 
 		si3::Manager::register_display_object(ground);
 		synchronizer->update();
+		skill_manager.update();
 		enemy.update();
 		if (UI){ (*UI).update(); }
 		for (size_t index = 0; index < players.size(); ++index)

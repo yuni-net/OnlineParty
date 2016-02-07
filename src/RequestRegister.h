@@ -1,10 +1,14 @@
 #pragma once
 
 #include <memory>
+#include "picojson.h"
 #include <simplect3D.h>
 
 namespace OnlineParty
 {
+	/**
+	I analyze the received datas and register it as needed.
+	*/
 	class RequestRegister
 	{
 	public:
@@ -16,10 +20,18 @@ namespace OnlineParty
 
 
 	private:
-		std::vector<std::unique_ptr<fw::Bindata> > requests;
-		std::vector<std::unique_ptr<fw::NetSurfer> > surfers;
+		struct SyncData
+		{
+			fw::Bindata request;
+			fw::NetSurfer surfer;
+		};
+
+		std::vector<std::unique_ptr<SyncData> > sync_datas;
 
 
-		void process_v0(std::unique_ptr<fw::Bindata> request, std::unique_ptr<fw::NetSurfer> surfer);
+		void process_binary_request(std::unique_ptr<SyncData> sync_data);
+		void process_binary_request_v0(std::unique_ptr<SyncData> sync_data);
+		void process_json_request(picojson::value & value);
+		void process_json_request_v0(picojson::object & root);
 	};
 }

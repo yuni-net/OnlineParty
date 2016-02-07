@@ -89,6 +89,7 @@
     <ClCompile Include="src\God.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\RequestRegister.cpp" />
+    <ClCompile Include="src\SkillManager.cpp" />
     <ClCompile Include="src\Synchronizer.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\UserInterface.cpp" />

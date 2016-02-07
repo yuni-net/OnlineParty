@@ -17,6 +17,7 @@ namespace OnlineParty
 		int get_my_ID() const;
 		unsigned long long get_limit_ms_afk() const;
 		void send_player_sync_data(const int ID, const fw::Bindata & data) const;
+		void send_request_to_server(const fw::Bindata & data) const;
 
 
 
