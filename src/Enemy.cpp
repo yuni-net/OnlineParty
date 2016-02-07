@@ -10,8 +10,8 @@ namespace OnlineParty
 		model.y(2.0f);
 		model.z(0.0f);
 
-		ms_to_begin_attack = 0;
-		did_begin_attack = true;
+		did_init_schedules = false;
+		did_send_request_sync_enemy_attack = false;
 	}
 
 	void Enemy::update()
@@ -29,20 +29,29 @@ namespace OnlineParty
 		si3::Manager::register_display_object(model);
 	}
 
-	void Enemy::sync_enemy_attack(const unsigned long long & ms_to_begin_attack, const float offset_radian)
+	void Enemy::sync_enemy_attack(const MsRadian schedules[2])
 	{
-		if (ms_to_begin_attack <= this->ms_to_begin_attack)
+		did_send_request_sync_enemy_attack = false;
+
+		if (did_init_schedules == false)
+		{
+			schedules_attack[0].ms_radian = schedules[0];
+			schedules_attack[0].done = false;
+			schedules_attack[1].ms_radian = schedules[1];
+			schedules_attack[1].done = false;
+			did_init_schedules = true;
+			return;
+		}
+
+		if (schedules_attack[1].done == false)
 		{
 			return;
 		}
 
-		if (did_begin_attack == false)
-		{
-			begin_attack();
-		}
-
-		this->ms_to_begin_attack = ms_to_begin_attack;
-		offset_radian_attack = offset_radian;
+		schedules_attack[0].ms_radian = schedules[0];
+		schedules_attack[0].done = false;
+		schedules_attack[1].ms_radian = schedules[1];
+		schedules_attack[1].done = false;
 	}
 
 
@@ -55,7 +64,11 @@ namespace OnlineParty
 
 	bool Enemy::should_I_sync() const
 	{
-		return did_begin_attack;
+		if (did_init_schedules == false)
+		{
+			return true;
+		}
+		return schedules_attack[1].done && (did_send_request_sync_enemy_attack==false);
 	}
 
 	void Enemy::send_request_sync_enemy_attack()
@@ -63,20 +76,38 @@ namespace OnlineParty
 		fw::Bindata request;
 		request.add(std::string("{\"signature\": \"OnlineParty\", \"version\": 0, \"request\": \"sync_enemy_attack\"}"));
 		God::get_synchronizer().send_request_to_server(request);
+		did_send_request_sync_enemy_attack = true;
 	}
 
 	bool Enemy::should_I_begin_attack() const
 	{
-		if (did_begin_attack)
+		if (did_init_schedules == false)
 		{
 			return false;
 		}
-		return ms_to_begin_attack <= God::get_now_time();
+
+		if (schedules_attack[0].done == false)
+		{
+			return God::get_now_time() >= schedules_attack[0].ms_radian.ms;
+		}
+
+		if (schedules_attack[1].done == false)
+		{
+			return God::get_now_time() >= schedules_attack[1].ms_radian.ms;
+		}
+
+		return false;
 	}
 
 	void Enemy::begin_attack()
 	{
-		// todo
+		Schedule * schedule = &(schedules_attack[0]);
+		if (schedules_attack[0].done)
+		{
+			schedule = &(schedules_attack[1]);
+		}
+		God::get_skill_manager().add(std::move(new ThunderBolt(schedule->ms_radian.ms, schedule->ms_radian.radian)));
+		shedule->done = true;
 	}
 
 

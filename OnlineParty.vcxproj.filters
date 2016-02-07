@@ -88,5 +88,6 @@
     <ClInclude Include="src\SkillManager.h">
       <Filter>SkillManager</Filter>
     </ClInclude>
+    <ClInclude Include="src\MsRadian.h" />
   </ItemGroup>
 </Project>

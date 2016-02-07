@@ -1,5 +1,6 @@
 #include "RequestRegister.h"
 #include "God.h"
+#include "MsRadian.h"
 
 namespace OnlineParty
 {
@@ -130,9 +131,15 @@ namespace OnlineParty
 	{
 		if (root["reply"].get<std::string>() == "sync_enemy_attack")
 		{
-			unsigned long long ms_to_begin_attack = static_cast<unsigned long long>(root["ms_to_begin_attack"].get<double>());
-			float offset_radian = static_cast<float>(root["offset_radian"].get<double>());
-			God::get_enemy().sync_enemy_attack(ms_to_begin_attack, offset_radian);
+			picojson::array & json_schedule = root["schedules_enemy_attack"].get<picojson::array>();
+			picojson::object & schedule0 = json_schedule[0].get<picojson::object>();
+			picojson::object & schedule1 = json_schedule[1].get<picojson::object>();
+			MsRadian schedules[2];
+			schedules[0].ms = static_cast<unsigned long long>(schedule0["ms"].get<double>());
+			schedules[0].radian = static_cast<float>(schedule0["radian"].get<double>());
+			schedules[1].ms = static_cast<unsigned long long>(schedule1["ms"].get<double>());
+			schedules[1].radian = static_cast<float>(schedule1["radian"].get<double>());
+			God::get_enemy().sync_enemy_attack(schedules);
 		}
 		else
 		{

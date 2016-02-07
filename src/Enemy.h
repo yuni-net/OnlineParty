@@ -1,6 +1,7 @@
 #pragma once
 
 #include <simplect3D.h>
+#include "MsRadian.h"
 
 namespace OnlineParty
 {
@@ -9,7 +10,7 @@ namespace OnlineParty
 	public:
 		Enemy();
 		void update();
-		void sync_enemy_attack(const unsigned long long & ms_to_begin_attack, const float offset_radian);
+		void sync_enemy_attack(const MsRadian schedules[2]);
 
 
 
@@ -18,10 +19,17 @@ namespace OnlineParty
 
 
 	private:
+		struct Schedule
+		{
+			MsRadian ms_radian;
+			bool done;
+		};
+
 		si3::Model model;
-		unsigned long long ms_to_begin_attack;
-		float offset_radian_attack;
-		bool did_begin_attack;
+		Schedule schedules_attack[2];
+
+		bool did_init_schedules;
+		bool did_send_request_sync_enemy_attack;
 
 		bool should_I_sync() const;
 
