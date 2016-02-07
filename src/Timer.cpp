@@ -52,34 +52,28 @@ namespace OnlineParty
 
 	unsigned long long Timer::time_to_ms(const SYSTEMTIME & systime) const
 	{
-		time_t daystime = make_time_t(systime);
-		time_t criteria = make_criteria_time_t();
-		double gap_days_as_sec = difftime(daystime, criteria);
-		unsigned long long gap_days_as_ms = static_cast<unsigned long long>(gap_days_as_sec) * 1000;
-		return gap_days_as_ms +
-			static_cast<unsigned long long>(systime.wHour) * 3600*1000 +
-			static_cast<unsigned long long>(systime.wMinute) * 60 * 1000 +
-			static_cast<unsigned long long>(systime.wSecond) * 1000 +
-			systime.wMilliseconds;
+		FILETIME file_time;
+		SystemTimeToFileTime(&systime, &file_time);
+		FILETIME local_ft;
+		FileTimeToLocalFileTime(&file_time, &local_ft);
+		SYSTEMTIME local_time;
+		FileTimeToSystemTime(&local_ft, &local_time);
+		time_t seconds = make_time_t(local_time);
+		return seconds * 1000 + systime.wMilliseconds;
 	}
 
 	time_t Timer::make_time_t(const SYSTEMTIME & st) const
 	{
 		tm time_data;
 		ZeroMemory(&time_data, sizeof(time_data));
-		time_data.tm_year = st.wYear-1900;
-		time_data.tm_mon = st.wMonth-1;
+		time_data.tm_year = st.wYear - 1900;
+		time_data.tm_mon = st.wMonth - 1;
 		time_data.tm_mday = st.wDay;
+		time_data.tm_hour = st.wHour;
+		time_data.tm_min = st.wMinute;
+		time_data.tm_sec = st.wSecond;
+		time_data.tm_isdst = 0;
 		return mktime(&time_data);
 	}
 
-	time_t Timer::make_criteria_time_t() const
-	{
-		tm time_data;
-		ZeroMemory(&time_data, sizeof(time_data));
-		time_data.tm_year = 2015 - 1900;
-		time_data.tm_mon = 10 - 1;
-		time_data.tm_mday = 1;
-		return mktime(&time_data);
-	}
 }
