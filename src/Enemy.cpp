@@ -4,9 +4,9 @@ namespace OnlineParty
 {
 	Enemy::Enemy()
 	{
-		model.load("data/nanase_pose.pmd");
+		model.load("data/Lat_Miku/Miku_mini.pmd");
 		model.x(0.0f);
-		model.y(2.0f);
+		model.y(1.0f);
 		model.z(0.0f);
 	}
 
