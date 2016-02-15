@@ -167,6 +167,10 @@ namespace OnlineParty
 		// The others of latest data is ignore.
 		RequestRegister ter(God::get_max_member());
 		ter.process(p2p);
+		if (ter.is_there_reply_rookie_joined())
+		{
+			send_rookie_damy_data(ter.get_reply_rookie_joined());
+		}
 		for (int index = 0; index < God::get_max_member(); ++index)
 		{
 			if (ter.is_there_request(index) == false){ continue; }
@@ -231,5 +235,16 @@ namespace OnlineParty
 		}
 	}
 
+	void Synchronizer::send_rookie_damy_data(picojson::value & value) const
+	{
+		picojson::object & root = value.get<picojson::object>();
+		const int ID = static_cast<int>(root["rookie_ID"].get<double>());
+		const std::string & IP = root["rookie_IP"].get<std::string>();
+		const unsigned short port = static_cast<unsigned short>(root["rookie_port"].get<double>());
+		const fw::NetSurfer surfer(fw::IP(IP), port);
+		fw::Bindata data;
+		data.add(0);
+		p2p.send(surfer, data);
+	}
 
 }

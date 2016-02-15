@@ -70,5 +70,13 @@ namespace OnlineParty
 		void throw_all_left_datas_to_trash();
 		void save_my_ID(picojson::object & root);
 		void save_others_surfer(picojson::object & root);
+
+		/**
+		@brief I send the rookie a damy data.
+		@param Set the picojson::value of the packet of the reply that the rookie joined.
+		@detail When there are restricted corn NAT, both of them must send a data to each other.
+				That's why I send it.
+		*/
+		void send_rookie_damy_data(picojson::value & value) const;
 	};
 }
