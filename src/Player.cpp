@@ -8,10 +8,13 @@ namespace OnlineParty
 	static const float default_radius = 10.0f;
 	static const float min_radius = 3.0f;
 	static const unsigned long long limit_ms_to_sync = 5000;
+	static const float model_head = 2.4f;
+	static const float rot_speed_pin = 2.4f;
 
-	Player::Player(const si3::ModelData & model_data)
+	Player::Player(const si3::ModelData & model_data, const si3::ImageData & image_data)
 	{
 		model.model_data(model_data);
+		pin.image_data(image_data);
 		ID = -1;
 	}
 
@@ -28,6 +31,16 @@ namespace OnlineParty
 		radian = (fw::xrandom() % 314159265)*0.00000001f;
 		radius = default_radius;
 		model.y(0.0f);
+		pin.culling(false);
+		pin.material().Ambient.r = (fw::xrandom() % 10000)*0.0001f;
+		pin.material().Ambient.g = (fw::xrandom() % 10000)*0.0001f;
+		pin.material().Ambient.b = (fw::xrandom() % 10000)*0.0001f;
+		pin.material().Diffuse.r = 0.0f;
+		pin.material().Diffuse.g = 0.0f;
+		pin.material().Diffuse.b = 0.0f;
+		pin.setblend_alpha();
+		pin.scale(0.01f);
+		pin.y(model.y() + model_head);
 		update_pos();
 		state = MyState::standingby;
 		should_update = true;
@@ -37,6 +50,8 @@ namespace OnlineParty
 
 	void Player::update()
 	{
+		pin.rot_y(pin.rot_y() + rot_speed_pin*God::get_elapsed_sec());
+
 		if (is_disable())
 		{
 			return;
@@ -130,6 +145,9 @@ namespace OnlineParty
 	 float: radius
 	 float: radian
 	 float: y
+	 float: red of pin
+	 float: green of pin
+	 float: blue of pin
 	 */
 	void Player::evaluate(fw::Bindata & sync_data)
 	{
@@ -141,6 +159,7 @@ namespace OnlineParty
 		float y;
 		sync_data >> radius >> radian >> y;
 		model.y(y);
+		sync_data >> pin.material().Ambient.r >> pin.material().Ambient.g >> pin.material().Ambient.b;
 		const float delta_sec = static_cast<float>(God::get_now_time() - that_time)/1000.0f;
 		update(delta_sec);
 		should_update = false;
@@ -183,6 +202,8 @@ namespace OnlineParty
 	{
 		model.x(cos(radian)*radius);
 		model.z(sin(radian)*radius);
+		pin.x(model.x());
+		pin.z(model.z());
 	}
 
 	void Player::look_at_center()
@@ -214,6 +235,7 @@ namespace OnlineParty
 		update_pos();
 		look_at_center();
 		si3::Manager::register_display_object(model);
+		si3::Manager::register_display_object(pin);
 	}
 
 
@@ -272,6 +294,9 @@ namespace OnlineParty
 	float: radius
 	float: radian
 	float: y
+	float: red of pin
+	float: green of pin
+	float: blue of pin
 	*/
 	void Player::send_sync_data() const
 	{
@@ -281,6 +306,9 @@ namespace OnlineParty
 		data.add(radius);
 		data.add(radian);
 		data.add(model.y());
+		data.add(pin.material().Ambient.r);
+		data.add(pin.material().Ambient.g);
+		data.add(pin.material().Ambient.b);
 		God::get_synchronizer().send_player_sync_data(ID, data);
 	}
 }
