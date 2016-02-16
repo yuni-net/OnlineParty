@@ -7,7 +7,7 @@ namespace OnlineParty
 	class Player
 	{
 	public:
-		Player(const si3::ModelData & model_data);
+		Player(const si3::ModelData & model_data, const si3::ImageData & image_data);
 		void init(const int ID, const fw::IP & IP, const unsigned short port);
 		void init(const int ID, const fw::NetSurfer & surfer);
 		void update();
@@ -71,6 +71,7 @@ namespace OnlineParty
 	//	float purpose_radian;
 		bool should_update;
 		bool has_changed;
+		si3::Leaf pin;
 		
 
 		void update_radius();

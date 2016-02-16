@@ -35,6 +35,7 @@ namespace OnlineParty
 		si3::Leaf ground;
 		Enemy enemy;
 		si3::ModelData player_modeld;
+		si3::ImageData player_pin;
 		std::vector<std::unique_ptr<Player> > players;
 		Cameraman cameraman;
 		std::unique_ptr<Synchronizer> synchronizer;

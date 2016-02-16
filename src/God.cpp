@@ -93,10 +93,11 @@ namespace OnlineParty
 
 		synchronizer.reset(new Synchronizer());
 		player_modeld.load("data/Lat_Miku/Miku_mini.pmd");
+		player_pin.load("data/player_pin.png", 100.0f);
 		players.resize(max_member);
 		for (int index = 0; index < max_member; ++index)
 		{
-			players[index].reset(new Player(player_modeld));
+			players[index].reset(new Player(player_modeld, player_pin));
 		}
 	}
 
