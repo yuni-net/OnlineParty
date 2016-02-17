@@ -78,5 +78,7 @@ namespace OnlineParty
 				That's why I send it.
 		*/
 		void send_rookie_damy_data(picojson::value & value) const;
+
+		void sync_enemy_attack(picojson::value & value);
 	};
 }

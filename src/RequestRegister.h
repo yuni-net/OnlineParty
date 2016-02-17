@@ -19,6 +19,8 @@ namespace OnlineParty
 		fw::NetSurfer & get_surfer(const int index) const;
 		bool is_there_reply_rookie_joined() const;
 		picojson::value & get_reply_rookie_joined();
+		bool is_there_request_sync_enemy_attack() const;
+		picojson::value & get_request_sync_enemy_attack();
 
 
 	private:
@@ -30,6 +32,7 @@ namespace OnlineParty
 
 		std::vector<std::unique_ptr<SyncData> > sync_datas;
 		std::unique_ptr<picojson::value> reply_rookie_joined;
+		std::unique_ptr<picojson::value> request_sync_enemy_attack;
 
 
 		void process_binary_request(std::unique_ptr<SyncData> sync_data);

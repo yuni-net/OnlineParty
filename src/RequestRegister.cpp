@@ -78,6 +78,16 @@ namespace OnlineParty
 		return *reply_rookie_joined;
 	}
 
+	bool RequestRegister::is_there_request_sync_enemy_attack() const
+	{
+		return request_sync_enemy_attack.get() != nullptr;
+	}
+
+	picojson::value & RequestRegister::get_request_sync_enemy_attack()
+	{
+		return *request_sync_enemy_attack;
+	}
+
 
 
 	void RequestRegister::process_binary_request(std::unique_ptr<SyncData> sync_data)
@@ -142,7 +152,7 @@ namespace OnlineParty
 		const std::string & reply = root["reply"].get<std::string>();
 		if (reply == "sync_enemy_attack")
 		{
-			// todo
+			request_sync_enemy_attack = std::move(value);
 		}
 		else if (reply == "rookie_joined")
 		{

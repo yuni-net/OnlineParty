@@ -167,6 +167,10 @@ namespace OnlineParty
 		// The others of latest data is ignore.
 		RequestRegister ter(God::get_max_member());
 		ter.process(p2p);
+		if (ter.is_there_request_sync_enemy_attack())
+		{
+			sync_enemy_attack(ter.get_request_sync_enemy_attack());
+		}
 		if (ter.is_there_reply_rookie_joined())
 		{
 			send_rookie_damy_data(ter.get_reply_rookie_joined());
@@ -245,6 +249,22 @@ namespace OnlineParty
 		fw::Bindata data;
 		data.add(0);
 		p2p.send(surfer, data);
+	}
+
+	void Synchronizer::sync_enemy_attack(picojson::value & value)
+	{
+#if 0
+		picojson::object & root = value.get<picojson::object>();
+		picojson::array & json_schedule = root["schedules_enemy_attack"].get<picojson::array>();
+		picojson::object & schedule0 = json_schedule[0].get<picojson::object>();
+		picojson::object & schedule1 = json_schedule[1].get<picojson::object>();
+		MsRadian schedules[2];
+		schedules[0].ms = static_cast<unsigned long long>(schedule0["ms"].get<double>());
+		schedules[0].radian = static_cast<float>(schedule0["radian"].get<double>());
+		schedules[1].ms = static_cast<unsigned long long>(schedule1["ms"].get<double>());
+		schedules[1].radian = static_cast<float>(schedule1["radian"].get<double>());
+		God::get_enemy().sync_enemy_attack(schedules);
+#endif
 	}
 
 }
