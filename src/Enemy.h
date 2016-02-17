@@ -17,6 +17,6 @@ namespace OnlineParty
 
 
 	private:
-		si3::Billboard tree;
+		si3::Model model;
 	};
 }
