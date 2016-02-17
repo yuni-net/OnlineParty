@@ -274,7 +274,6 @@ namespace OnlineParty
 
 	void Synchronizer::sync_enemy_attack(picojson::value & value)
 	{
-#if 0
 		picojson::object & root = value.get<picojson::object>();
 		picojson::array & json_schedule = root["schedules_enemy_attack"].get<picojson::array>();
 		picojson::object & schedule0 = json_schedule[0].get<picojson::object>();
@@ -285,7 +284,6 @@ namespace OnlineParty
 		schedules[1].ms = static_cast<unsigned long long>(schedule1["ms"].get<double>());
 		schedules[1].radian = static_cast<float>(schedule1["radian"].get<double>());
 		God::get_enemy().sync_enemy_attack(schedules);
-#endif
 	}
 
 	void Synchronizer::process_binary_request(std::vector<std::unique_ptr<SyncData> > & sync_datas, std::unique_ptr<SyncData> sync_data)
