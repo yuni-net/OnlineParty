@@ -167,6 +167,7 @@ namespace OnlineParty
 		// todo WARNING: There is a vulnerability that the spoofing is possible by declarating the ID
 		// Cuz the legitimacy about the relationship between ID and surfer is NOT verified.
 		std::vector<std::unique_ptr<SyncData> > sync_datas;
+		sync_datas.resize(God::get_max_member());
 
 		while (p2p.are_there_any_left_datas())
 		{
