@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "picojson.h"
 #include <simplect3D.h>
 
@@ -23,6 +24,12 @@ namespace OnlineParty
 
 		~Synchronizer();
 	private:
+		struct SyncData
+		{
+			fw::Bindata request;
+			fw::NetSurfer surfer;
+		};
+
 		struct State
 		{
 			enum
@@ -71,5 +78,22 @@ namespace OnlineParty
 		void throw_all_left_datas_to_trash();
 		void save_my_ID(picojson::object & root);
 		void save_others_surfer(picojson::object & root);
+
+		/**
+		@brief I send the rookie a damy data.
+		@param Set the picojson::value of the packet of the reply that the rookie joined.
+		@detail When there are restricted corn NAT, both of them must send a data to each other.
+				That's why I send it.
+		*/
+		void send_rookie_damy_data(picojson::value & value) const;
+
+		void sync_enemy_attack(picojson::value & value);
+
+		void process_binary_request(std::vector<std::unique_ptr<SyncData> > & sync_datas, std::unique_ptr<SyncData> sync_data);
+		void process_binary_request_v0(std::vector<std::unique_ptr<SyncData> > & sync_datas, std::unique_ptr<SyncData> sync_data);
+		void process_json_request(std::unique_ptr<picojson::value> value);
+		void process_json_request_v0(std::unique_ptr<picojson::value> value);
+
+		void process_sync_datas(std::vector<std::unique_ptr<SyncData> > & sync_datas);
 	};
 }

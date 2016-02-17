@@ -88,7 +88,6 @@
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\God.cpp" />
     <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\RequestRegister.cpp" />
     <ClCompile Include="src\SkillManager.cpp" />
     <ClCompile Include="src\Synchronizer.cpp" />
     <ClCompile Include="src\ThunderBolt.cpp" />
@@ -103,7 +102,6 @@
     <ClInclude Include="src\MsRadian.h" />
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\RequestRegister.h" />
     <ClInclude Include="src\Skill.h" />
     <ClInclude Include="src\SkillManager.h" />
     <ClInclude Include="src\Synchronizer.h" />

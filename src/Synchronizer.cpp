@@ -1,12 +1,12 @@
 #include <fstream>
 #include "Synchronizer.h"
 #include "God.h"
-#include "RequestRegister.h"
 
 // todo 満席だったときの処理と、いつまでたってもサーバーから返答が返ってこないときの処理と、そもそもサーバーに接続できないときの処理をする必要がある。
 
 namespace OnlineParty
 {
+	const unsigned int signature_size = 12;	// 12 means strlen("OnlineParty") + 1 as null string.
 
 	Synchronizer::Synchronizer()
 	{
@@ -173,21 +173,41 @@ namespace OnlineParty
 
 	void Synchronizer::process_request()
 	{
-		// The others of latest data is ignore.
-		RequestRegister ter(God::get_max_member());
-		ter.process(p2p);
-		for (int index = 0; index < God::get_max_member(); ++index)
+		// todo WARNING: There is a vulnerability that the spoofing is possible by declarating the ID
+		// Cuz the legitimacy about the relationship between ID and surfer is NOT verified.
+		std::vector<std::unique_ptr<SyncData> > sync_datas;
+		sync_datas.resize(God::get_max_member());
+
+		while (p2p.are_there_any_left_datas())
 		{
-			if (ter.is_there_request(index) == false){ continue; }
-			Player & player = God::get_player(index);
-			if (player.is_disable())
+			std::unique_ptr<SyncData> sync_data(new SyncData());
+			const bool did_succeed = p2p.pop_received_data(sync_data->request, sync_data->surfer);
+			if (did_succeed == false)
 			{
-				// todo
-				player.init(index, ter.get_surfer(index));
-				God::get_player(get_my_ID()).on_lookie_join();
+				continue;
 			}
-			player.evaluate(ter.get_request(index));
+
+			char signature[signature_size];
+			sync_data->request.copy(signature, signature_size);
+
+			if (signature == std::string("OnlineParty"))
+			{
+				process_binary_request(sync_datas, std::move(sync_data));
+				continue;
+			}
+
+			std::unique_ptr<picojson::value> value(new picojson::value());
+			const std::string & result = picojson::parse(*value, sync_data->request.buffer());
+			if (result.empty())
+			{
+				process_json_request(std::move(value));
+				continue;
+			}
+
+			// That was not the request for OnlineParty.
 		}
+
+		process_sync_datas(sync_datas);
 	}
 
 	bool Synchronizer::get_reply_server(picojson::value & value)
@@ -240,5 +260,126 @@ namespace OnlineParty
 		}
 	}
 
+	void Synchronizer::send_rookie_damy_data(picojson::value & value) const
+	{
+		picojson::object & root = value.get<picojson::object>();
+		const int ID = static_cast<int>(root["rookie_ID"].get<double>());
+		const std::string & IP = root["rookie_IP"].get<std::string>();
+		const unsigned short port = static_cast<unsigned short>(root["rookie_port"].get<double>());
+		const fw::NetSurfer surfer(fw::IP(IP), port);
+		fw::Bindata data;
+		data.add(0);
+		p2p.send(surfer, data);
+	}
 
+	void Synchronizer::sync_enemy_attack(picojson::value & value)
+	{
+#if 0
+		picojson::object & root = value.get<picojson::object>();
+		picojson::array & json_schedule = root["schedules_enemy_attack"].get<picojson::array>();
+		picojson::object & schedule0 = json_schedule[0].get<picojson::object>();
+		picojson::object & schedule1 = json_schedule[1].get<picojson::object>();
+		MsRadian schedules[2];
+		schedules[0].ms = static_cast<unsigned long long>(schedule0["ms"].get<double>());
+		schedules[0].radian = static_cast<float>(schedule0["radian"].get<double>());
+		schedules[1].ms = static_cast<unsigned long long>(schedule1["ms"].get<double>());
+		schedules[1].radian = static_cast<float>(schedule1["radian"].get<double>());
+		God::get_enemy().sync_enemy_attack(schedules);
+#endif
+	}
+
+	void Synchronizer::process_binary_request(std::vector<std::unique_ptr<SyncData> > & sync_datas, std::unique_ptr<SyncData> sync_data)
+	{
+		fw::Bindata & request = sync_data->request;
+		request.proceed(signature_size);
+
+		int32_t version;
+		sync_data->request >> version;
+		if (version == 0)
+		{
+			process_binary_request_v0(sync_datas, std::move(sync_data));
+		}
+		else
+		{
+			// The version is not supported.
+		}
+	}
+
+	void Synchronizer::process_binary_request_v0(std::vector<std::unique_ptr<SyncData> > & sync_datas, std::unique_ptr<SyncData> sync_data)
+	{
+		std::string request_text;
+		sync_data->request >> request_text;
+		if (request_text == "sync")
+		{
+			int32_t ID;
+			sync_data->request >> ID;
+			if (static_cast<unsigned int>(ID) >= sync_datas.size())
+			{
+				return;
+			}
+
+			// The others of latest data is ignore.
+			sync_datas[ID] = std::move(sync_data);
+		}
+		else
+		{
+			// This is unknown request.
+		}
+	}
+
+	void Synchronizer::process_json_request(std::unique_ptr<picojson::value> value)
+	{
+		// The program will be terminated when the data is invalid
+		// Cuz the keys have not found.
+		// "the keys": exp. "signature", "version" and so on.
+		picojson::object & root = value->get<picojson::object>();
+		if (root["signature"].get<std::string>() != "OnlineParty")
+		{
+			// This is not OnlineParty data.
+			return;
+		}
+
+		if (static_cast<int>(root["version"].get<double>()) == 0)
+		{
+			process_json_request_v0(std::move(value));
+		}
+		else
+		{
+			// The version is not supported.
+		}
+	}
+
+	void Synchronizer::process_json_request_v0(std::unique_ptr<picojson::value> value)
+	{
+		picojson::object & root = value->get<picojson::object>();
+		const std::string & reply = root["reply"].get<std::string>();
+		if (reply == "sync_enemy_attack")
+		{
+			sync_enemy_attack(*value);
+		}
+		else if (reply == "rookie_joined")
+		{
+			send_rookie_damy_data(*value);
+		}
+		else
+		{
+			// This is unknown reply.
+		}
+	}
+
+	void Synchronizer::process_sync_datas(std::vector<std::unique_ptr<SyncData> > & sync_datas)
+	{
+		for (int index = 0; index < God::get_max_member(); ++index)
+		{
+			std::unique_ptr<SyncData> sync_data(std::move(sync_datas[index]));
+			if (sync_data.get() == nullptr){ continue; }
+			Player & player = God::get_player(index);
+			if (player.is_disable())
+			{
+				player.init(index, sync_data->surfer);
+				God::get_player(get_my_ID()).on_lookie_join();
+			}
+			player.evaluate(sync_data->request);
+		}
+	}
 }
