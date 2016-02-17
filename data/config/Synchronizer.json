@@ -1,5 +1,5 @@
 {
-	"server_ip": "172.26.16.9",
+	"server_ip": "127.0.0.1",
 	"server_port": 9696,
 	"limit_ms_afk": 16000
 }
