@@ -88,7 +88,6 @@
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\God.cpp" />
     <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\RequestRegister.cpp" />
     <ClCompile Include="src\Synchronizer.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\UserInterface.cpp" />
@@ -100,7 +99,6 @@
     <ClInclude Include="src\God.h" />
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\RequestRegister.h" />
     <ClInclude Include="src\Synchronizer.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\UserInterface.h" />
