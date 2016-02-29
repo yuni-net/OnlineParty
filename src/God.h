@@ -28,15 +28,15 @@ namespace OnlineParty
 
 
 	private:
-		Timer timer;
+		int max_member;
 		si3::Leaf ground;
+		std::unique_ptr<Synchronizer> synchronizer;
+		std::unique_ptr<Timer> timer;
 		Enemy enemy;
 		si3::ModelData player_modeld;
 		si3::ImageData player_pin;
 		std::vector<std::unique_ptr<Player> > players;
 		Cameraman cameraman;
-		std::unique_ptr<Synchronizer> synchronizer;
-		int max_member;
 		std::unique_ptr<UserInterface> UI;
 
 		static God & get_instance();
