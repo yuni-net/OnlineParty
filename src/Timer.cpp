@@ -84,6 +84,7 @@ namespace OnlineParty
 				{
 					GetSystemTime(&end_time);
 					fw::NetSurfer surfer;
+					data.seek_head();
 					p2p.pop_received_data(data, surfer);
 					if (is_valid_data(data))
 					{
