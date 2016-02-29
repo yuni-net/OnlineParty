@@ -14,12 +14,12 @@ namespace OnlineParty
 
 	float God::get_elapsed_sec()
 	{
-		return get_instance().timer.get_elapsed_sec();
+		return get_instance().timer->get_elapsed_sec();
 	}
 
 	unsigned long long God::get_now_time()
 	{
-		return get_instance().timer.get_now_time();
+		return get_instance().timer->get_now_time();
 	}
 
 	int God::get_max_member()
@@ -83,7 +83,8 @@ namespace OnlineParty
 		}
 
 		synchronizer.reset(new Synchronizer());
-		timer = Timer::create();
+		timer.reset(new Timer());
+		timer->begin_sync();
 		player_modeld.load("data/Lat_Miku/Miku_mini.pmd");
 		player_pin.load("data/player_pin.png", 100.0f);
 		players.resize(max_member);

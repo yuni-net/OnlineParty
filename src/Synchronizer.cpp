@@ -70,15 +70,6 @@ namespace OnlineParty
 		}
 	}
 
-	void Synchronizer::send_request_sync_time() const
-	{
-		fw::Bindata send_data;
-		send_data.add(std::string("OnlineParty"));
-		static const int8_t version = 0;
-		send_data.add(version);
-		send_data.add(request_code_sync_time);
-		p2p.send(server_surfer, send_data);
-	}
 
 
 
