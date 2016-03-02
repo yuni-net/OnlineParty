@@ -6,8 +6,6 @@
 
 namespace OnlineParty
 {
-	std::ofstream * ofs;
-
 	Timer::Timer()
 	{
 		SYSTEMTIME sys_time;
@@ -69,8 +67,6 @@ namespace OnlineParty
 
 	void Timer::sync_time_with_server(void * parameter)
 	{
-		ofs = new std::ofstream();
-		ofs->open("log.txt", std::ios::out);
 		auto & self = *reinterpret_cast<Timer *>(parameter);
 		static const int try_qty = 10;
 		fw::P2P p2p;
@@ -112,35 +108,21 @@ namespace OnlineParty
 			const auto & sent_ms = time_to_ms(beg_time);
 			const auto & received_ms = time_to_ms(end_time);
 			auto estimated_current_time = sent_ms + (received_ms - sent_ms)/2;
-			*ofs << "byte of received_ms:";
-			for (int i = 0; i < 8; ++i)
-			{
-				*ofs << " " << fw::uint(reinterpret_cast<const uint8_t *>(&received_ms)[i]);
-			}
-			*ofs << "\n";
 
-			*ofs << "current_time_ms: " << current_time_ms << "\n";
-			*ofs << "received_ms: " << received_ms << "\n";
-			*ofs << "estimated_current_time: " << estimated_current_time << "\n";
 			if (current_time_ms >= estimated_current_time)
 			{
 				total_offset += static_cast<int>(current_time_ms - estimated_current_time);
-				*ofs << "offset: +" << current_time_ms - estimated_current_time << "\n";
 			}
 			else
 			{
 				total_offset -= static_cast<int>(estimated_current_time - current_time_ms);
-				*ofs << "offset: -" << estimated_current_time - current_time_ms << "\n";
 			}
-			*ofs << "\n";
 		}
 
 		int offset = total_offset / try_qty;
 		self.base_count += offset;
 		self.count += offset;
 		self.is_syncing = false;
-		delete ofs;
-		fw::popup("synced!");
 	}
 
 	unsigned long long Timer::time_to_ms(const SYSTEMTIME & systime)
@@ -191,16 +173,12 @@ namespace OnlineParty
 		}
 		else
 		{
-			*ofs << "byte of got data:";
 			uint8_t byte;
 			for (int i = 7; i >= 0; --i)
 			{
 				data >> byte;
-				*ofs << " " << fw::uint(byte);
 				reinterpret_cast<uint8_t *>(&time)[i] = byte;
 			}
-			*ofs << "\n";
-			*ofs << "time: " << time << "\n";
 		}
 		
 		return time;
