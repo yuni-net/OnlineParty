@@ -31,7 +31,7 @@ namespace OnlineParty
 			fw::NetSurfer surfer;
 		};
 
-		fw::P2P_without_lifeline p2p;
+		fw::P2P p2p;
 		fw::NetSurfer server_surfer;
 		int my_ID;
 		unsigned long long limit_ms_afk;
