@@ -1,6 +1,8 @@
-#include "Timer.h"
-#include "God.h"
+#include <fstream>
+
 #include <simplect3D.h>
+#include "God.h"
+#include "Timer.h"
 
 namespace OnlineParty
 {
@@ -171,15 +173,12 @@ namespace OnlineParty
 		}
 		else
 		{
-			int8_t a, b, c, d;
-			data >> a >> b >> c >> d;
-			time = d;
-			time <<= 8;
-			time += c;
-			time <<= 8;
-			time += b;
-			time <<= 8;
-			time += a;
+			uint8_t byte;
+			for (int i = 7; i >= 0; --i)
+			{
+				data >> byte;
+				reinterpret_cast<uint8_t *>(&time)[i] = byte;
+			}
 		}
 		
 		return time;
