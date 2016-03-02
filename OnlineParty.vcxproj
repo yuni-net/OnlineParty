@@ -84,7 +84,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Fantomwaves\FantomWaves_cpp\P2P.cpp" />
     <ClCompile Include="src\Cameraman.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\God.cpp" />
