@@ -20,27 +20,19 @@ namespace OnlineParty
 		void send_player_sync_data(const int ID, const fw::Bindata & data) const;
 
 
-
 		~Synchronizer();
 	private:
+		static const int8_t request_code_sync_time = 0;
+		static const int8_t request_code_sync_player = 1;
+
 		struct SyncData
 		{
 			fw::Bindata request;
 			fw::NetSurfer surfer;
 		};
 
-		struct State
-		{
-			enum
-			{
-				waiting_reply_join,
-				waiting_request_sync
-			};
-		};
-
 		fw::P2P p2p;
 		fw::NetSurfer server_surfer;
-		int state;
 		int my_ID;
 		unsigned long long limit_ms_afk;
 
@@ -56,11 +48,6 @@ namespace OnlineParty
 		void send_join_request();
 
 		/**
-		@brief I expected to receive the reply for join.
-		*/
-		void wait_reply_join();
-
-		/**
 		@brief I process the requests for synchronization.
 		*/
 		void process_request();
@@ -74,7 +61,6 @@ namespace OnlineParty
 		*/
 		bool get_reply_server(picojson::value & value);
 
-		void throw_all_left_datas_to_trash();
 		void save_my_ID(picojson::object & root);
 		void save_others_surfer(picojson::object & root);
 

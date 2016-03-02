@@ -1,0 +1,80 @@
+byte of got data: 0 0 1 83 53 18 131 157
+time: 1456884319133
+byte of received_ms: 157 131 18 53 83 1 0 0
+current_time_ms: 1456884319133
+received_ms: 1456884319133
+estimated_current_time: 1456884319132
+offset: +1
+
+byte of got data: 0 0 1 83 53 18 131 158
+time: 1456884319134
+byte of received_ms: 159 131 18 53 83 1 0 0
+current_time_ms: 1456884319134
+received_ms: 1456884319135
+estimated_current_time: 1456884319134
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 159
+time: 1456884319135
+byte of received_ms: 159 131 18 53 83 1 0 0
+current_time_ms: 1456884319135
+received_ms: 1456884319135
+estimated_current_time: 1456884319135
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 160
+time: 1456884319136
+byte of received_ms: 160 131 18 53 83 1 0 0
+current_time_ms: 1456884319136
+received_ms: 1456884319136
+estimated_current_time: 1456884319136
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 161
+time: 1456884319137
+byte of received_ms: 161 131 18 53 83 1 0 0
+current_time_ms: 1456884319137
+received_ms: 1456884319137
+estimated_current_time: 1456884319137
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 162
+time: 1456884319138
+byte of received_ms: 162 131 18 53 83 1 0 0
+current_time_ms: 1456884319138
+received_ms: 1456884319138
+estimated_current_time: 1456884319138
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 163
+time: 1456884319139
+byte of received_ms: 163 131 18 53 83 1 0 0
+current_time_ms: 1456884319139
+received_ms: 1456884319139
+estimated_current_time: 1456884319138
+offset: +1
+
+byte of got data: 0 0 1 83 53 18 131 163
+time: 1456884319139
+byte of received_ms: 163 131 18 53 83 1 0 0
+current_time_ms: 1456884319139
+received_ms: 1456884319139
+estimated_current_time: 1456884319139
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 164
+time: 1456884319140
+byte of received_ms: 164 131 18 53 83 1 0 0
+current_time_ms: 1456884319140
+received_ms: 1456884319140
+estimated_current_time: 1456884319140
+offset: +0
+
+byte of got data: 0 0 1 83 53 18 131 165
+time: 1456884319141
+byte of received_ms: 165 131 18 53 83 1 0 0
+current_time_ms: 1456884319141
+received_ms: 1456884319141
+estimated_current_time: 1456884319141
+offset: +0
+

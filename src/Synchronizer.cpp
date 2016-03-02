@@ -10,7 +10,6 @@ namespace OnlineParty
 
 	Synchronizer::Synchronizer()
 	{
-		state = State::waiting_reply_join;
 		load_config();
 		send_join_request();
 	}
@@ -22,14 +21,7 @@ namespace OnlineParty
 			return;
 		}
 
-		if (state == State::waiting_reply_join)
-		{
-			wait_reply_join();
-		}
-		else
-		{
-			process_request();
-		}
+		process_request();
 	}
 
 	const fw::NetSurfer & Synchronizer::get_server_surfer() const
@@ -58,8 +50,9 @@ namespace OnlineParty
 	{
 		fw::Bindata send_data;
 		send_data.add(std::string("OnlineParty"));
-		send_data.add(int32_t(0));
-		send_data.add(std::string("sync"));
+		static const int8_t version = 0;
+		send_data.add(version);
+		send_data.add(request_code_sync_player);
 		send_data.add(int32_t(ID));
 		send_data.add(data);
 
@@ -76,6 +69,7 @@ namespace OnlineParty
 			}
 		}
 	}
+
 
 
 
@@ -122,44 +116,6 @@ namespace OnlineParty
 			"}"
 		));
 		p2p.send(server_surfer, join_request);
-	}
-
-	void Synchronizer::wait_reply_join()
-	{
-		while (p2p.are_there_any_left_datas())
-		{
-			picojson::value value;
-			if (get_reply_server(value) == false)
-			{
-				continue;
-			}
-
-			// The program will be terminated when the data is invalid
-			// Cuz the keys have not found.
-			// "the keys": exp. "signature", "version" and so on.
-			picojson::object & root = value.get<picojson::object>();
-			if (root["signature"].get<std::string>() != "OnlineParty")
-			{
-				continue;
-			}
-			if (static_cast<int>(root["version"].get<double>()) != 0)
-			{
-				continue;
-			}
-
-			if (root["reply"].get<std::string>() == "fully occupied")
-			{
-				// There are no vacant table.
-			}
-			else if (root["reply"].get<std::string>() == "join")
-			{
-				throw_all_left_datas_to_trash();
-				save_my_ID(root);
-				save_others_surfer(root);
-				state = State::waiting_request_sync;
-				God::on_join();
-			}
-		}
 	}
 
 	void Synchronizer::process_request()
@@ -223,16 +179,6 @@ namespace OnlineParty
 		return true;
 	}
 
-	void Synchronizer::throw_all_left_datas_to_trash()
-	{
-		fw::Bindata data;
-		fw::NetSurfer surfer;
-		while (p2p.are_there_any_left_datas())
-		{
-			p2p.pop_received_data(data, surfer);
-		}
-	}
-
 	void Synchronizer::save_my_ID(picojson::object & root)
 	{
 		my_ID = static_cast<int>(root["your ID"].get<double>());
@@ -284,7 +230,7 @@ namespace OnlineParty
 		fw::Bindata & request = sync_data->request;
 		request.proceed(signature_size);
 
-		int32_t version;
+		int8_t version;
 		sync_data->request >> version;
 		if (version == 0)
 		{
@@ -298,9 +244,9 @@ namespace OnlineParty
 
 	void Synchronizer::process_binary_request_v0(std::vector<std::unique_ptr<SyncData> > & sync_datas, std::unique_ptr<SyncData> sync_data)
 	{
-		std::string request_text;
-		sync_data->request >> request_text;
-		if (request_text == "sync")
+		int8_t request_code;
+		sync_data->request >> request_code;
+		if (request_code == request_code_sync_player)
 		{
 			int32_t ID;
 			sync_data->request >> ID;
@@ -344,7 +290,17 @@ namespace OnlineParty
 	{
 		picojson::object & root = value->get<picojson::object>();
 		const std::string & reply = root["reply"].get<std::string>();
-		if (reply == "sync_enemy_attack")
+		if (reply == "fully occupied")
+		{
+			// There are no vacant table.
+		}
+		else if (reply == "join")
+		{
+			save_my_ID(root);
+			save_others_surfer(root);
+			God::on_join();
+		}
+		else if (reply == "sync_enemy_attack")
 		{
 			sync_enemy_attack(*value);
 		}
