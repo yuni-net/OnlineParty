@@ -69,7 +69,7 @@ namespace OnlineParty
 	{
 		auto & self = *reinterpret_cast<Timer *>(parameter);
 		static const int try_qty = 10;
-		fw::P2P p2p;
+		fw::P2P_without_lifeline p2p;
 		fw::Bindata data;
 		int total_offset = 0;
 		SYSTEMTIME beg_time;
@@ -151,7 +151,7 @@ namespace OnlineParty
 		return mktime(&time_data);
 	}
 
-	void Timer::send_request_sync_current_time(const fw::P2P & p2p)
+	void Timer::send_request_sync_current_time(const fw::P2P_base & p2p)
 	{
 		fw::Bindata request;
 		request.add(std::string("OnlineParty"));

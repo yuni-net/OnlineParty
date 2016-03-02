@@ -68,7 +68,7 @@ namespace OnlineParty
 		*/
 		static time_t make_time_t(const SYSTEMTIME & systime);
 
-		static void send_request_sync_current_time(const fw::P2P & p2p);
+		static void send_request_sync_current_time(const fw::P2P_base & p2p);
 		static unsigned long long get_current_time(fw::Bindata & data);
 		static bool is_valid_data(fw::Bindata & data);
 	};

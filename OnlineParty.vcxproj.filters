@@ -23,6 +23,7 @@
     <ClCompile Include="src\UserInterface.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Fantomwaves\FantomWaves_cpp\P2P.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="God">
