@@ -80,5 +80,7 @@ namespace OnlineParty
 		void process_json_request_v0(std::unique_ptr<picojson::value> value);
 
 		void process_sync_datas(std::vector<std::unique_ptr<SyncData> > & sync_datas);
+
+		bool find_server(const unsigned short port, fw::NetSurfer & server_surfer);
 	};
 }
