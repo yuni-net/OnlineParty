@@ -82,27 +82,30 @@ namespace OnlineParty
 
 	void Synchronizer::load_config()
 	{
+		std::string hostname = "plz find server";
+		unsigned short port = 9696;
+		limit_ms_afk = 12 * 1000;
+
 		std::ifstream ifs("data/config/Synchronizer.json", std::ios::in);
 		picojson::value value;
 		std::string result = picojson::parse(value, ifs);
-		if (result.empty() == false)
+		const bool did_load_succeed = result.empty();
+		if (did_load_succeed)
 		{
-			// I failed to load config.
-			// I set the default parameter.
-			fw::IP server_ip;
-			server_ip.set_by_hostname("192.168.11.1");
-			server_surfer.set(server_ip, 9696);
-			return;
+			picojson::object & root = value.get<picojson::object>();
+			hostname = root["server_ip"].get<std::string>();
+			port = static_cast<unsigned short>(root["server_port"].get<double>());
+			limit_ms_afk = static_cast<unsigned long long>(root["limit_ms_afk"].get<double>());
 		}
 
-		picojson::object & root = value.get<picojson::object>();
-		const std::string & server_hostname = root["server_ip"].get<std::string>();
-		const unsigned short server_port = static_cast<unsigned short>(root["server_port"].get<double>());
-		fw::IP server_ip;
-		server_ip.set_by_hostname(server_hostname);
-		server_surfer.set(server_ip, server_port);
-
-		limit_ms_afk = static_cast<unsigned long long>(root["limit_ms_afk"].get<double>());
+		if (hostname == "plz find server")
+		{
+			const bool did_succeed = find_server(port, server_surfer);
+		}
+		else
+		{
+			server_surfer.set(fw::IP(hostname), port);
+		}
 	}
 
 	void Synchronizer::send_join_request()
@@ -328,5 +331,60 @@ namespace OnlineParty
 			}
 			player.evaluate(sync_data->request);
 		}
+	}
+
+	bool Synchronizer::find_server(const unsigned short port, fw::NetSurfer & server_surfer)
+	{
+		fw::Bindata request;
+		request.add(std::string(
+			"{ "
+			"\"signature\": \"OnlineParty\", "
+			"\"version\": 0, "
+			"\"request\": \"Im_finding_server\" "
+			"}"));
+		fw::BroadCaster caster;
+		caster.send(port, request);
+
+		while (true)
+		{
+			if (caster.are_there_any_left_datas() == false)
+			{
+				Sleep(1);
+				continue;
+			}
+
+			fw::Bindata reply;
+			fw::NetSurfer sent_user;
+			caster.pop_received_data(reply, sent_user);
+			picojson::value value;
+			std::string result = picojson::parse(value, reply.buffer());
+			const bool did_succeed = result.empty();
+			if (did_succeed==false)
+			{
+				continue;
+			}
+
+			picojson::object & root = value.get<picojson::object>();
+			if (root["signature"].get<std::string>() != "OnlineParty")
+			{
+				continue;
+			}
+
+			if (static_cast<int>(root["version"].get<double>()) == 0)
+			{
+				if (root["reply"].get<std::string>() != "Im_finding_server")
+				{
+					continue;
+				}
+
+				server_surfer = sent_user;
+				return true;
+			}
+			else
+			{
+				// This is unsupported version.
+			}
+		}
+		return false;
 	}
 }
