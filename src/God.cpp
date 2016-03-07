@@ -1,4 +1,5 @@
 #include "God.h"
+#include "break_firewall.h"
 
 namespace OnlineParty
 {
@@ -60,6 +61,8 @@ namespace OnlineParty
 
 	God::God()
 	{
+		break_firewall();
+
 		ground.load("data/ground.png");
 		ground.x(0.0f);
 		ground.y(0.0f);
