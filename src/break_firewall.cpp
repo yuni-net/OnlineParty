@@ -26,6 +26,16 @@ namespace OnlineParty
 			}
 		} while (true);
 
+		fd_set fds;
+		FD_ZERO(&fds);
+		FD_SET(sock, &fds);
+
+		timeval timev;
+		timev.tv_sec = 0;
+		timev.tv_usec = 8;
+
+		select(0, &fds, NULL, NULL, &timev);
+
 		closesocket(sock);
 	}
 }
