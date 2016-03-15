@@ -23,6 +23,9 @@
     <ClCompile Include="src\UserInterface.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="src\FirewallInstallHelper.cpp">
+      <Filter>break_firewall</Filter>
+    </ClCompile>
     <ClCompile Include="src\break_firewall.cpp">
       <Filter>break_firewall</Filter>
     </ClCompile>
@@ -75,6 +78,9 @@
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\UserInterface.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FirewallInstallHelper.h">
+      <Filter>break_firewall</Filter>
     </ClInclude>
     <ClInclude Include="src\break_firewall.h">
       <Filter>break_firewall</Filter>

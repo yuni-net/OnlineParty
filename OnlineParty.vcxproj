@@ -87,6 +87,7 @@
     <ClCompile Include="src\break_firewall.cpp" />
     <ClCompile Include="src\Cameraman.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\FirewallInstallHelper.cpp" />
     <ClCompile Include="src\God.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Synchronizer.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="src\break_firewall.h" />
     <ClInclude Include="src\Cameraman.h" />
     <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\FirewallInstallHelper.h" />
     <ClInclude Include="src\God.h" />
     <ClInclude Include="src\picojson.h" />
     <ClInclude Include="src\Player.h" />
